@@ -32,6 +32,7 @@ open(SK, ">> $mainPath/npy_conversion_info/skipped_sout.dat") or die $!;
 #close(SK);
 
 open(UD, ">> $mainPath/npy_conversion_info/used_sout.dat") or die $!;
+
 #close(UD);
 #for QE convertion
 my $ry2eV = 13.605684958731;
@@ -250,8 +251,11 @@ You need to do vc-relax, scf or drop this case by modifying all_setting.pm!\n" i
 	my @force = grep {if(m/^.+force =\s+([-+]?\d+\.?\d+)\s+([-+]?\d+\.?\d+)\s+([-+]?\d+\.?\d+)/){
 			$_ = [$1*$force_convert,$2*$force_convert,$3*$force_convert];}} @forcetemp;
     my $forceNo = @force/$natom;# frame number
-	die "force set number $forceNo is not equal to energy number in $out[$id]\n" if ($energyNo != $forceNo);
-	
+	if ($energyNo != $forceNo){
+		print SK "force set number $forceNo (super large force!) is not equal to energy number in $out[$id]\n" ;
+		close(SK);
+		return;
+	}
 	for my $idf (1..@force/$natom){# loop over frames
 		#print "$_ @{$force[$_ -1]}[0..2]\n";
 		my $temp = ($idf - 1) * $natom;# beginning id of each force set for a frame 

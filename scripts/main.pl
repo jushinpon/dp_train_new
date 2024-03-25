@@ -1,6 +1,7 @@
 =b
 Perl version for degen. Developed by Prof. Shin-Pon Ju at NSYSU
-usage: nohup perl main.pl| tee nohup.txt  &
+usage: nohup perl main.pl &
+and use tail -f nohup.out to check your output at the same time.
 find the max forces of all qe sout file in decending sequence: 
 grep "Max force" nohup.txt|awk '{print $NF}'|sort -nr
 
@@ -181,6 +182,7 @@ if($jobtype eq "npy_only"){# a brand new dpgen job. No previous labeled npy file
 
     #the following loop also check the required files in the corresponding folder
    # my $pm = Parallel::ForkManager->new("2");
+    my $str_counter = 1;
     for my $str (@allIniStr){
     #    $pm->start and next;
         
@@ -225,7 +227,9 @@ if($jobtype eq "npy_only"){# a brand new dpgen job. No previous labeled npy file
         else{
             $npy_setting{dftBE} = 0.0;#not used
             $npy_setting{expBE} = 0.0;#not used
+            print "\n***Current npy conversion progress: $str_counter/".@allIniStr."\n";
             &DFTout2npy_QE(\%system_setting,\%npy_setting);#send settings for getting npy
+            $str_counter++;
         }
     #    $pm-> finish;
     }
