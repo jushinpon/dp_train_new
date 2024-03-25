@@ -1,0 +1,134 @@
+{
+    "learning_rate": {
+        "start_lr": 0.001,
+        "stop_lr": 3.51e-08,
+        "decay_steps": 1000,
+        "type": "exp"
+    },
+    "loss": {
+        "start_pref_f": 1000,
+        "limit_pref_e": 2,
+        "limit_pref_v": 2,
+        "start_pref_v": 10,
+        "start_pref_e": 10,
+        "limit_pref_f": 2,
+        "type": "ener",
+        "start_pref_ae": 0.0,
+        "limit_pref_ae": 0.0
+    },
+    "model": {
+        "type_map": [
+            "Mo"
+        ],
+        "fitting_net": {
+            "seed": 9267,
+            "neuron": [
+                240,
+                240,
+                240
+            ],
+            "resnet_dt": true,
+            "type": "ener",
+            "numb_fparam": 0,
+            "numb_aparam": 0,
+            "activation_function": "tanh",
+            "precision": "float64",
+            "trainable": true,
+            "rcond": 0.001,
+            "atom_ener": []
+        },
+        "descriptor": {
+            "type": "se_e2_a",
+            "rcut": 6.000000000001,
+            "sel": [
+                72
+            ],
+            "rcut_smth": 5.00000001,
+            "axis_neuron": 12,
+            "seed": 8233,
+            "resnet_dt": false,
+            "neuron": [
+                25,
+                50,
+                100
+            ],
+            "activation_function": "tanh",
+            "type_one_side": false,
+            "precision": "float64",
+            "trainable": true,
+            "exclude_types": [],
+            "set_davg_zero": false
+        },
+        "data_stat_nbatch": 10,
+        "data_stat_protect": 0.01
+    },
+    "training": {
+        "training_data": {
+            "batch_size": "auto",
+            "set_prefix": "set",
+            "systems": [
+                "/home/jsp/Perl4dpgen/all_npy01/initial/fcc_bulk",
+                "/home/jsp/Perl4dpgen/all_npy01/initial/hcp_bulk",
+                "/home/jsp/Perl4dpgen/all_npy01/iter_002/hcp_bulk",
+                "/home/jsp/Perl4dpgen/all_npy01/iter_002/fcc_bulk",
+                "/home/jsp/Perl4dpgen/all_npy01/iter_003/hcp_bulk",
+                "/home/jsp/Perl4dpgen/all_npy01/iter_003/fcc_bulk",
+                "/home/jsp/Perl4dpgen/all_npy02/iter_000/fcc_bulk",
+                "/home/jsp/Perl4dpgen/all_npy02/iter_000/hcp_bulk",
+                "/home/jsp/Perl4dpgen/all_npy02/iter_001/hcp_bulk",
+                "/home/jsp/Perl4dpgen/all_npy02/iter_001/fcc_bulk",
+                "/home/jsp/Perl4dpgen/all_npy02/iter_002/fcc_bulk",
+                "/home/jsp/Perl4dpgen/all_npy02/iter_002/hcp_bulk",
+                "/home/jsp/Perl4dpgen/all_npy02/iter_003/fcc_bulk",
+                "/home/jsp/Perl4dpgen/all_npy02/iter_003/hcp_bulk",
+                "/home/jsp/Perl4dpgen/all_npy02/iter_004/fcc_bulk",
+                "/home/jsp/Perl4dpgen/all_npy02/iter_004/hcp_bulk",
+                "/home/jsp/Perl4dpgen/all_npy02/iter_005/fcc_bulk",
+                "/home/jsp/Perl4dpgen/all_npy02/iter_005/hcp_bulk"
+            ],
+            "auto_prob": "prob_sys_size",
+            "sys_probs": null
+        },
+        "profiling": false,
+        "validation_data": {
+            "numb_btch": 3,
+            "batch_size": "auto",
+            "systems": [
+                "/home/jsp/Perl4dpgen/all_npy01/initial/fcc_bulk",
+                "/home/jsp/Perl4dpgen/all_npy01/initial/hcp_bulk",
+                "/home/jsp/Perl4dpgen/all_npy01/iter_002/hcp_bulk",
+                "/home/jsp/Perl4dpgen/all_npy01/iter_002/fcc_bulk",
+                "/home/jsp/Perl4dpgen/all_npy01/iter_003/hcp_bulk",
+                "/home/jsp/Perl4dpgen/all_npy01/iter_003/fcc_bulk",
+                "/home/jsp/Perl4dpgen/all_npy02/iter_000/fcc_bulk",
+                "/home/jsp/Perl4dpgen/all_npy02/iter_000/hcp_bulk",
+                "/home/jsp/Perl4dpgen/all_npy02/iter_001/hcp_bulk",
+                "/home/jsp/Perl4dpgen/all_npy02/iter_001/fcc_bulk",
+                "/home/jsp/Perl4dpgen/all_npy02/iter_002/fcc_bulk",
+                "/home/jsp/Perl4dpgen/all_npy02/iter_002/hcp_bulk",
+                "/home/jsp/Perl4dpgen/all_npy02/iter_003/fcc_bulk",
+                "/home/jsp/Perl4dpgen/all_npy02/iter_003/hcp_bulk",
+                "/home/jsp/Perl4dpgen/all_npy02/iter_004/fcc_bulk",
+                "/home/jsp/Perl4dpgen/all_npy02/iter_004/hcp_bulk",
+                "/home/jsp/Perl4dpgen/all_npy02/iter_005/fcc_bulk",
+                "/home/jsp/Perl4dpgen/all_npy02/iter_005/hcp_bulk"
+            ],
+            "set_prefix": "set",
+            "auto_prob": "prob_sys_size",
+            "sys_probs": null
+        },
+        "numb_test": 4,
+        "disp_training": true,
+        "numb_steps": 100000,
+        "save_ckpt": "model.ckpt",
+        "disp_file": "lcurve.out",
+        "save_freq": 1000,
+        "time_training": true,
+        "profiling_file": "timeline.json",
+        "disp_freq": 1000,
+        "seed": 21387,
+        "tensorboard": false,
+        "tensorboard_log_dir": "log",
+        "tensorboard_freq": 1
+    }
+}

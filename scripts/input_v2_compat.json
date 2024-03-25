@@ -1,0 +1,75 @@
+{
+    "_comment": "that's all",
+    "training": {
+        "numb_test": 4,
+        "save_ckpt": "model.ckpt",
+        "_comment": "that's all",
+        "time_training": true,
+        "disp_training": true,
+        "seed": 9309,
+        "profiling_file": "timeline.json",
+        "disp_file": "lcurve.out",
+        "stop_batch": 20000,
+        "save_freq": 5000,
+        "disp_freq": 1000,
+        "training_data": {
+            "systems": [
+                "/home/jsp/Perl4dpgen/all_npy/initial/bcc_bulk",
+                "/home/jsp/Perl4dpgen/all_npy/initial/fcc_bulk",
+                "/home/jsp/Perl4dpgen/all_npy/initial/hcp_bulk",
+                "/home/jsp/Perl4dpgen/all_npy00/iter_000/fcc_bulk",
+                "/home/jsp/Perl4dpgen/all_npy00/iter_000/bcc_bulk",
+                "/home/jsp/Perl4dpgen/all_npy00/iter_000/hcp_bulk",
+                "/home/jsp/Perl4dpgen/all_npy00/iter_001/fcc_bulk",
+                "/home/jsp/Perl4dpgen/all_npy00/iter_001/bcc_bulk"
+            ]
+        },
+        "profiling": false
+    },
+    "model": {
+        "type_map": [
+            "Mo"
+        ],
+        "_comment": " that's all",
+        "fitting_net": {
+            "neuron": [
+                240,
+                240,
+                240
+            ],
+            "_comment": " that's all",
+            "resnet_dt": true,
+            "seed": 16445
+        },
+        "descriptor": {
+            "type": "se_a",
+            "rcut_smth": 2.00000001,
+            "seed": 7981,
+            "sel": "auto",
+            "resnet_dt": false,
+            "rcut": 5.500000000001,
+            "neuron": [
+                25,
+                50,
+                100
+            ],
+            "axis_neuron": 12,
+            "_comment": " that's all"
+        }
+    },
+    "learning_rate": {
+        "start_lr": 0.001,
+        "decay_steps": 1000,
+        "stop_lr": 0.0003584859224085419,
+        "_comment": "that's all"
+    },
+    "loss": {
+        "_comment": " that's all",
+        "start_pref_v": 0,
+        "start_pref_e": 0.02,
+        "limit_pref_f": 1,
+        "limit_pref_v": 0,
+        "limit_pref_e": 2,
+        "start_pref_f": 1000
+    }
+}

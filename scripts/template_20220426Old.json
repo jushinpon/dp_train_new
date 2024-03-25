@@ -1,0 +1,73 @@
+{
+    "loss": {
+        "start_pref_f": 1000,
+        "start_pref_e": 0.02,
+        "limit_pref_e": 2,
+        "limit_pref_v": 0,
+        "start_pref_v": 0,
+        "limit_pref_f": 1,
+        "_comment": " that's all"
+    },
+    "model": {
+        "type_map": [
+            "Mo"
+        ],
+        "descriptor": {
+            "axis_neuron": 12,
+            "rcut_smth": 1.5,
+            "sel": "auto",
+            "seed": 19213,
+            "rcut": 5.000000000001,
+            "_comment": " that's all",
+            "type": "se_a",
+            "resnet_dt": false,
+            "neuron": [
+                25,
+                50,
+                100
+            ]
+        },
+        "_comment": " that's all",
+        "fitting_net": {
+            "neuron": [
+                240,
+                240,
+                240
+            ],
+            "resnet_dt": true,
+            "seed": 18328,
+            "_comment": " that's all"
+        }
+    },
+    "training": {
+        "save_ckpt": "model.ckpt",
+        "disp_training": true,
+        "disp_file": "lcurve.out",
+        "stop_batch": 250000,
+        "disp_freq": 10,
+        "time_training": true,
+        "seed": 13824,
+        "profiling": false,
+        "numb_test": 4,
+        "save_freq": 50,
+        "_comment": "that's all",
+        "profiling_file": "timeline.json",
+        "training_data": {
+            "set_prefix": "set",
+            "systems": [
+                "/home/jsp/dpgen_PerlVersion/all_npy/initial/bcc_bulk",
+                "/home/jsp/dpgen_PerlVersion/all_npy/initial/fcc_bulk",
+                "/home/jsp/dpgen_PerlVersion/all_npy/initial/hcp_bulk"
+            ],
+            "batch_size": 4
+        }
+    },
+    "learning_rate": {
+        "stop_lr": 3.51e-8,
+        "_comment": "that's all",
+        "decay_steps": 2000,
+        "start_lr": 0.001,
+        "decay_rate": 0.95
+    },
+    "_comment": "that's all"
+}

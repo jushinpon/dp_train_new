@@ -1,0 +1,45 @@
+&CONTROL
+calculation = "scf"
+disk_io = 'none'
+pseudo_dir = '/opt/QEpot/SSSP_efficiency_pseudos/'
+etot_conv_thr =   6.4000000000d-04
+forc_conv_thr =   1.0000000000d-04
+tprnfor = .true.
+tstress = .true.
+verbosity = 'high'
+/
+!controlend
+
+&SYSTEM
+ibrav = 0
+nat = 64
+ntyp = 5
+starting_magnetization(1) =   1.0000000000d-01
+starting_magnetization(2) =   1.0000000000d-01
+starting_magnetization(3) =   3.3333333333d-01
+starting_magnetization(4) =   1.0000000000d-01
+starting_magnetization(5) =   1.0000000000d-01
+nosym = .TRUE.
+ecutrho = 7.8000000000d+02
+ecutwfc = 6.5000000000d+01
+occupations = "smearing"
+degauss = 2.2049585400d-02
+smearing = "gaussian"
+nspin = 2
+!systemend
+/
+
+&ELECTRONS
+electron_maxstep = 200
+mixing_beta =   4.0000000000d-01
+/
+K_POINTS {automatic}
+ATOMIC_SPECIES
+Ag  107.8682  Ag_ONCV_PBE-1.0.oncvpsp.upf
+Ge  72.63  ge_pbe_v1.4.uspp.F.UPF
+Mn  54.938044  mn_pbe_v1.5.uspp.F.UPF
+Sb  121.76  sb_pbe_v1.4.uspp.F.UPF
+Te  127.6  Te_pbe_v1.uspp.F.UPF
+ATOMIC_POSITIONS {angstrom}
+CELL_PARAMETERS {angstrom}
+!End

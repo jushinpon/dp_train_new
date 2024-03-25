@@ -1,0 +1,76 @@
+{
+    "loss": {
+        "start_pref_f": 1000,
+        "start_pref_e": 1,
+        "limit_pref_e": 1,
+        "limit_pref_v": 0,
+        "start_pref_v": 0,
+        "limit_pref_f": 1,
+        "_comment": " that's all"
+    },
+    "model": {
+        "type_map": [
+            "N"
+        ],
+        "descriptor": {
+            "axis_neuron": 12,
+            "rcut_smth": 1.5,
+            "sel": "auto",
+            "seed": 19213,
+            "rcut": 5.000000000001,
+            "_comment": " that's all",
+            "type": "se_a",
+            "resnet_dt": false,
+            "neuron": [
+                25,
+                50,
+                100
+            ]
+        },
+        "_comment": " that's all",
+        "fitting_net": {
+            "neuron": [
+                240,
+                240,
+                240
+            ],
+            "resnet_dt": true,
+            "seed": 18328,
+            "_comment": " that's all"
+        }
+    },
+    "training": {
+        "save_ckpt": "model.ckpt",
+        "disp_training": true,
+        "disp_file": "lcurve.out",
+        "numb_steps": 250000,
+        "disp_freq": 10,
+        "time_training": true,
+        "seed": 13824,
+        "profiling": false,
+        "numb_test": 4,
+        "save_freq": 50,
+        "_comment": "that's all",
+        "profiling_file": "timeline.json",
+        "training_data": {
+            "set_prefix": "set",
+            "systems": [],
+            "batch_size": "auto"
+        },
+         "validation_data":{
+            "set_prefix": "set",
+            "systems":		[],
+            "batch_size":	"auto",
+            "numb_btch":	1,
+            "_comment":		"that's all"
+        }
+
+    },
+    "learning_rate": {
+        "stop_lr": 3.0e-8,
+        "_comment": "that's all",
+        "decay_steps": 2000,
+        "start_lr": 0.001        
+    },
+    "_comment": "that's all"
+}

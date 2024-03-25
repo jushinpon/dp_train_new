@@ -1,0 +1,48 @@
+You need to cd into the all_cfgs folder, and then conduct the corresponding perl script.
+For example, you want to create labelled folder for those not labelling 
+perl ../tool_scripts/for_relabel/relabel.pl
+
+1. relabel.pl:
+
+perl ../tool_scripts/for_relabel/relabel.pl
+
+you will get a file "nolabel.dat". If not, that means all folders with labelled subfolders.
+if "nolabel.dat" appears, you have better to check it first.
+Then set some parameters in the relabel.pl. 
+
+my $max4relabel = 2;# how many cfgs you want to use in labelled folder
+my $lowerbound = 0.05;#below which not lebelled
+conduct this script again
+perl ../tool_scripts/for_relabel/relabel.pl
+You will get labelled folders for all dirs.
+
+2. cfg2QEinput.pl:
+perl ../tool_scripts/for_relabel/cfg2QEinput.pl
+
+All cfg files in labelled folders will be used to create QE input files.
+
+
+3. sh4QEinput.pl:
+perl ../tool_scripts/for_relabel/sh4QEinput.pl
+
+Make sbatch files for all QE input file, and then submit them.
+You need to set the following in sh4QEinput.pl:
+
+
+my $submitJobs = "yes";#only check how many labelled cfg files, then decide how 
+
+#for your sh file
+my %sbatch_para = (
+            nodes => 1,#how many nodes for your qe job
+            ntasks_per_node => 12,
+            partition => "debug",#which partition you want to use
+            pwPath => "/opt/QEGCC_MPICH4.0.3/bin/pw.x", #qe executable          
+            mpiPath => "/opt/mpich-4.0.3/bin/mpiexec" #mpipath          
+            );
+
+4. makenpy4all.pl:
+perl ../tool_scripts/for_relabel/makenpy4all.pl
+
+Convert all sout files into npy, then you will get all_npy_cfgs folder. Move all_npy_cfgs folder to the path as all_npy folder is located!
+
+Do the standalone or do the dpgen again.
