@@ -10,6 +10,7 @@ nohup.out
 /standalone_dptrain*
 /all_cfgs*
 /DLP_test
+/DLP_test4compress
 *.txt
 *.out
 *.dat

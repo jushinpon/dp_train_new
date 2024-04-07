@@ -6,7 +6,7 @@ use strict;
 open(BAD, "> ./bad_files_checkbysoftlink.dat") or die $!;
 print BAD "#The following files are bad and filtered by softlink4initial.pl\n"; 
 #####make link for labelled folders
-my $include_labelled = "yes";#if yes, you need to provide parent paths of your labelled folders (@all_labelled) 
+my $include_labelled = "no";#if yes, you need to provide parent paths of your labelled folders (@all_labelled) 
 my @all_labelled;
 if($include_labelled eq "yes"){
     @all_labelled = qw(
@@ -28,7 +28,7 @@ if($include_labelled eq "yes"){
 my @all_inifolder;
 #!!! make the following if you have place everything in the initial folder
 @all_inifolder= qw(
-    /home/ben/dpgen/perl4dpgen_standalone-virial/initial_test/
+    /home/jsp1/test/perl4dpgen_20221025/initial
 );
 map { s/^\s+|\s+$//g; } @all_inifolder;
 

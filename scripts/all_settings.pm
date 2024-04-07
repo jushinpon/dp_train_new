@@ -12,26 +12,33 @@ use warnings;
 use Cwd;
 use POSIX;
 ###!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! You need to set the following parameters for your case !!!!!!!!!
-my @DLP_elements = ("Fe","Na","O","P");#your DLP element sequence
+my @DLP_elements = ("Sn","Pb","Te");#your DLP element sequence
 my $force_upperbound = 50.0;# eV/A, the max force allowed in npy
 
 #Please set the following for $jobtype in order:
 #1. npy_only: get npy files and files in npy_conversion_info
 #2. dp_train: only do dp train with your npy files.
-my $jobtype = "npy_only";
-#my $jobtype = "dp_train";
+#my $jobtype = "npy_only";
+my $jobtype = "dp_train";
 
 #for label
-my $trainNo = 4;#4 for label, and 1 with a larger training step (20000000) for the final
-my $trainstep = 500000;
+my $trainNo = 3;#4 for label, and 1 with a larger training step (20000000) for the final
+my $trainstep = 100000;
+my $compress_trainstep = $trainstep;#you may use a different value for compress training time number
 
-#for final
+###IMPORTANT, PLEASE READ THE FOLLOWING FOR THE FINAL TRAININ!##########
+
+#!!!!!for final training if the labeling process has been done.
+#if you want to keep your old DLP 01~04, rename the dp_train folder
+#, which includes subfolders graph01~04 to dp_train4label. The perl main.pl using the follwoing setting:
+
 #my $trainNo = 1;#4 for label, and 1 with a larger training step (20000000) for the final
-#my $trainstep = 500000 * 4;
+#my $trainstep = 2000000;
+#my $compress_trainstep = $trainstep;
 
 #check deepMD papers for the following three of your material
 my $rcut = 6.00000000000001;
-my $rcut_smth = 5.80000000001;
+my $rcut_smth = 5.8000000001;
 my $descriptor_type = "se_a";
 
 #########end of parameter settings
@@ -90,7 +97,7 @@ $dptrain_setting{json_script} = "$currentPath/template.json";# json template fil
 $dptrain_setting{json_outdir} = "$mainPath/dp_train";
 $dptrain_setting{working_dir} = "$mainPath/dp_train";
 $dptrain_setting{trainstep} = $trainstep;#you may set a smaller train step for the first several dpgen processes
-$dptrain_setting{compresstrainstep} = 80000;
+$dptrain_setting{compresstrainstep} = $compress_trainstep;
 $dptrain_setting{final_trainstep} = 200000;
 $dptrain_setting{final_compresstrainstep} = 400000;
 #lr(t) = start_lr * decay_rate ^ ( t / decay_steps ),default decay_rate:0.95
@@ -113,9 +120,6 @@ $dptrain_setting{save_ckpt4compress} = "model_compress.ckpt";
 $dptrain_setting{disp_file} = "lcurve.out";
 $dptrain_setting{disp_file4compress} = "lcurve_compress.out";
 
-#export OMP_NUM_THREADS=6
-#export TF_INTRA_OP_PARALLELISM_THREADS=3
-#export TF_INTER_OP_PARALLELISM_THREADS=2
 my %npy_setting;# most by dynamical setting
 
 #lmp setting
@@ -152,6 +156,7 @@ my $forkNo = 100;#although we don't have so many cores, only for submitting jobs
 my $pm = Parallel::ForkManager->new("$forkNo");
     my $trainNo = $system_setting{trainNo};
     my $json_outdir = $dptrain_setting{json_outdir};
+    `rm -rf $json_outdir`;#clear old ones
 #make folders and files will not change during the dpgen process    
     for (1..$trainNo){
         $pm->start and next;
@@ -172,10 +177,14 @@ my $pm = Parallel::ForkManager->new("$forkNo");
 	    `sed -i '/#sed_anchor02/a dp train $json_outdir/graph$temp.json' $json_outdir/slurm_dp$temp.sh`;
 	    `sed -i '/dp freeze .*/d' $json_outdir/slurm_dp$temp.sh`;
 	    `sed -i '/#sed_anchor03/a dp freeze -o graph$temp.pb' $json_outdir/slurm_dp$temp.sh`;
-       # `sed -i '/dp compress .*/d' $json_outdir/slurm_dp$temp.sh`;
-	   # `sed -i '/#sed_anchor04/a dp compress -i graph$temp.pb -o graph-compress$temp.pb' $json_outdir/slurm_dp$temp.sh`;
-       # `sed -i '/init-frz-model .*/d' $json_outdir/slurm_dp$temp.sh`;
-	   # `sed -i '/#sed_anchor05/a dp train $json_outdir/graph$temp-compress.json --init-frz-model graph-compress$temp.pb' $json_outdir/slurm_dp$temp.sh`;
+        `sed -i '/dp compress .*/d' $json_outdir/slurm_dp$temp.sh`;
+	    
+        #`sed -i '/#sed_dpout/a cp dp$temp.dpout dp$temp-ori.dpout' $json_outdir/slurm_dp$temp.sh`;
+        #`sed -i '/cp dp.dpout .*/d' $json_outdir/slurm_dp$temp.sh`;
+	            
+        `sed -i '/#sed_anchor04/a dp compress -i graph$temp.pb -o graph-compress$temp.pb' $json_outdir/slurm_dp$temp.sh`;
+        `sed -i '/init-frz-model .*/d' $json_outdir/slurm_dp$temp.sh`;
+	    `sed -i '/#sed_anchor05/a dp train $json_outdir/graph$temp-compress.json --init-frz-model graph-compress$temp.pb' $json_outdir/slurm_dp$temp.sh`;
   $pm-> finish;  
     }
 $pm->wait_all_children;   

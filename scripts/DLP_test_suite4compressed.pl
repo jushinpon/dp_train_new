@@ -13,14 +13,14 @@ my $lmp_exe = "/opt/lammps-mpich-4.0.3/lmpdeepmd";
 my $currentPath = getcwd();
 my $parent_path = `dirname $currentPath`;
 $parent_path =~ s/^\s+|\s+$//g;
-`rm -rf $parent_path/DLP_test`;#remove old data
-`mkdir -p   $parent_path/DLP_test`;
-my @datafile = `find -L $parent_path/initial -maxdepth 2 -mindepth 2 -type f -name "*.data"|grep -v compress`;#find all data files to read by read_data in lmp scripts
+`rm -rf $parent_path/DLP_test4compress`;#remove old data
+`mkdir -p   $parent_path/DLP_test4compress`;
+my @datafile = `find -L $parent_path/initial -maxdepth 2 -mindepth 2 -type f -name "*.data"`;#find all data files to read by read_data in lmp scripts
 map { s/^\s+|\s+$//g; } @datafile;
 die "No data files\n" unless(@datafile);
 
 #####DLP files
-my @pb = `find $parent_path/dp_train -type f -name "*.pb"`;#DLP files
+my @pb = `find $parent_path/dp_train -type f -name "*.pb"|grep compress`;#DLP files
 map { s/^\s+|\s+$//g; } @pb;
 die "No DLP pb files\n" unless(@pb);
 
@@ -44,23 +44,23 @@ for (0 .. $max -1){
     $filename =~ s/^\s+|\s+$//g;
     my $foldername = $filename;
     $foldername =~ s/\.data//g;
-    `mkdir -p $parent_path/DLP_test/$foldername`;
+    `mkdir -p $parent_path/DLP_test4compress/$foldername`;
     my $rand4vel = int(rand()*100000);
     my %lmp_para = (
            input_data => "$datafile",#data path
-           output_script => "$parent_path/DLP_test/$foldername/$foldername.in",
+           output_script => "$parent_path/DLP_test4compress/$foldername/$foldername.in",
            DLP => "$pb[0]",
            step => 50000, #step for NPT
            rand => $rand4vel
     );     
     &lmp_script(\%lmp_para);
-    push @lmp_path,"$parent_path/DLP_test/$foldername/$foldername.in";
+    push @lmp_path,"$parent_path/DLP_test4compress/$foldername/$foldername.in";
 }#all data files
 #making slurm file for conducting all lmp jobs
 my @string = qq(
 #!/bin/sh
 #SBATCH --output=lmp4all.out
-#SBATCH --job-name=DLP_test
+#SBATCH --job-name=DLP_test4compress
 #SBATCH --nodes=1
 #SBATCH --partition=All
 source activate deepmd-cpu
@@ -80,8 +80,8 @@ export KMP_SETTINGS=TRUE
 map { s/^\s+|\s+$//g; } @string;
 my $string = join("\n",@string);
 
-unlink "$parent_path/DLP_test/lmp4all.sh";
-open(FH, '>', "$parent_path/DLP_test/lmp4all.sh") or die $!;
+unlink "$parent_path/DLP_test4compress/lmp4all.sh";
+open(FH, '>', "$parent_path/DLP_test4compress/lmp4all.sh") or die $!;
 print FH "$string\n";
 
 map { s/^\s+|\s+$//g; } @lmp_path;#all lmp in
@@ -97,7 +97,7 @@ for (@lmp_path){
 
 close(FH);
 
-`cd $parent_path/DLP_test;sbatch lmp4all.sh`;
+`cd $parent_path/DLP_test4compress;sbatch lmp4all.sh`;
 #####here doc for lmp in##########
 sub lmp_script
 {

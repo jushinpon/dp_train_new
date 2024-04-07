@@ -161,12 +161,13 @@ END_MESSAGE
 }
 
 #if($onlyfinal_dptrain eq "yes") {goto final_dptrain;}
-#make all required folders and slurm files
-&all_settings::create_required();
+#make all required folders and slurm files for training
+if($jobtype eq "dp_train"){
+    &all_settings::create_required();
+}
 
 if($jobtype eq "npy_only"){# a brand new dpgen job. No previous labeled npy files exist
     print "\n\n#***Doing initial npy convertion\n";
-   # `rm -rf $mainPath/matplot`;
     `rm -rf $mainPath/all_npy`;
     `rm -rf ../npy_conversion_info`;
 
