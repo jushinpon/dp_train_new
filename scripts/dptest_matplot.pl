@@ -118,7 +118,7 @@ for (0..$#allnpy4valid){#copy validation npy files
     `mkdir -p $validation_dir/$_`;
     `cp -r $allnpy4valid[$_] $validation_dir/$_`;
 }
-my @pb_files = `find $mainPath/dp_train -type f -name "*.pb"`;#all npy files
+my @pb_files = `find $mainPath/dp_train -type f -name "*.pb"|grep -v compress`;#all npy files
 my @pb_folders = `find $mainPath/dp_train -type d -name "graph*"`;#all graphxx folders
 map { s/^\s+|\s+$//g; } @pb_files;
 map { s/^\s+|\s+$//g; } @pb_folders;
@@ -217,7 +217,7 @@ for (1..$trainNo){
             `echo "$temp[0] $temp[1]" >> ./temp.e.out`;
         }
         `cp  ./temp.e.out $mainPath/matplot_data/$make_plots[$_]-temp.e-graph$temp.out`;#for raw data
-
+       
 # end of energy normalization
         if(-e "/opt/anaconda3/bin/activate"){
             system ("bash -c 'source /opt/anaconda3/bin/activate base;python dp_plots.py'");

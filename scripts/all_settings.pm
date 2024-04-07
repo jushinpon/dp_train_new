@@ -23,7 +23,7 @@ my $jobtype = "dp_train";
 
 #for label
 my $trainNo = 3;#4 for label, and 1 with a larger training step (20000000) for the final
-my $trainstep = 100000;
+my $trainstep = 500000;
 my $compress_trainstep = $trainstep;#you may use a different value for compress training time number
 
 ###IMPORTANT, PLEASE READ THE FOLLOWING FOR THE FINAL TRAININ!##########

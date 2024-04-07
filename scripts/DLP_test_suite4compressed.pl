@@ -50,7 +50,7 @@ for (0 .. $max -1){
            input_data => "$datafile",#data path
            output_script => "$parent_path/DLP_test4compress/$foldername/$foldername.in",
            DLP => "$pb[0]",
-           step => 50000, #step for NPT
+           step => 20000, #step for NPT
            rand => $rand4vel
     );     
     &lmp_script(\%lmp_para);

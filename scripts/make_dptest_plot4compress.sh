@@ -1,7 +1,7 @@
 #!/bin/sh
 #sed_anchor01
-#SBATCH --output=dptest_plot.dat
-#SBATCH --job-name=dptest_plot
+#SBATCH --output=dptest_plot4compress.dat
+#SBATCH --job-name=dptest_compress
 #SBATCH --nodes=1
 ##SBATCH --ntasks-per-node=8
 #SBATCH --partition=All
@@ -24,6 +24,6 @@ export KMP_AFFINITY=granularity=fine,compact,1,0
 export KMP_BLOCKTIME=0
 export KMP_SETTINGS=TRUE
 echo "perl script"
-perl ./dptest_matplot.pl
-echo "dptest_matplot.pl done !"
+perl ./dptest4compress_matplot.pl
+echo "dptest4compress_matplot.pl done !"
 
