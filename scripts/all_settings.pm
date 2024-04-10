@@ -12,19 +12,19 @@ use warnings;
 use Cwd;
 use POSIX;
 ###!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! You need to set the following parameters for your case !!!!!!!!!
-my @DLP_elements = ("Sn","Pb","Te");#your DLP element sequence
+my @DLP_elements = ("Fe","Na","O","P");#your DLP element sequence
 my $force_upperbound = 50.0;# eV/A, the max force allowed in npy
 
 #Please set the following for $jobtype in order:
 #1. npy_only: get npy files and files in npy_conversion_info
 #2. dp_train: only do dp train with your npy files.
-#my $jobtype = "npy_only";
-my $jobtype = "dp_train";
+my $jobtype = "npy_only";
+#my $jobtype = "dp_train";
 
 #for label
-my $trainNo = 3;#4 for label, and 1 with a larger training step (20000000) for the final
-my $trainstep = 500000;
-my $compress_trainstep = $trainstep;#you may use a different value for compress training time number
+#my $trainNo = 3;#4 for label, and 1 with a larger training step (20000000) for the final
+#my $trainstep = 500000;
+#my $compress_trainstep = $trainstep;#you may use a different value for compress training time number
 
 ###IMPORTANT, PLEASE READ THE FOLLOWING FOR THE FINAL TRAININ!##########
 
@@ -32,9 +32,9 @@ my $compress_trainstep = $trainstep;#you may use a different value for compress 
 #if you want to keep your old DLP 01~04, rename the dp_train folder
 #, which includes subfolders graph01~04 to dp_train4label. The perl main.pl using the follwoing setting:
 
-#my $trainNo = 1;#4 for label, and 1 with a larger training step (20000000) for the final
-#my $trainstep = 2000000;
-#my $compress_trainstep = $trainstep;
+my $trainNo = 1;#4 for label, and 1 with a larger training step (20000000) for the final
+my $trainstep = 500000;
+my $compress_trainstep = $trainstep*4;
 
 #check deepMD papers for the following three of your material
 my $rcut = 6.00000000000001;

@@ -17,6 +17,7 @@ use Parallel::ForkManager;
 use lib '.';#assign pm dir for current dir
 use all_settings;# package for all setting
 use elements;# package for element information
+use List::Util ("shuffle","max");
 
 require './DFTout2npy_QE.pl';#QE output to npy files
 require './dp_train.pl';
@@ -39,6 +40,7 @@ my $force_upperbound = $system_setting{force_upperbound};
 my $useFormationEnergy = $system_setting{useFormationEnergy};
 my $doDFT4dpgen = $system_setting{doDFT4dpgen};#if no, collect all cfg files for DFT
 my $doiniTrain = $system_setting{doiniTrain};#if no, collect all cfg files for DFT
+my $ratio4val = $system_setting{ratio4val};# for labelled structures serving as validation
 
 #make data files for all QE input files
 if($jobtype eq "npy_only"){
@@ -250,6 +252,23 @@ if($jobtype eq "npy_only"){# a brand new dpgen job. No previous labeled npy file
         for my $n (@npy){
             die "No $n.npy in $i\n" unless(-e "$i/$n.npy");
         }
+    }
+    #begin to prepare validation dataset for labelled structures
+    my @all_labels = `find -L $mainPath/all_npy -type d -name "label_0*"`;
+    map { s/^\s+|\s+$//g; } @all_labels;
+    print "\n\nThe following is to build validation dataset for labelled structures!\n";
+    sleep(1);
+    @all_labels = shuffle @all_labels;
+    my $labelNo = @all_labels;
+    my $label4val = floor($ratio4val * $labelNo);
+    print "All labelled structure Number: $labelNo\n";
+    print " labelled structure Number for validation: $label4val\n";
+    sleep(1);
+    for my $l (0.. $label4val - 1){
+        print "$all_labels[$l]\n";
+        system("mkdir -p $all_labels[$l]/val");
+        system("mv $all_labels[$l]/*.* $all_labels[$l]/val/");
+        #`cp -R $all_labels[$l]/set* $all_labels[$l]/val/`;
     }
     print "**All npy related files are ready for training\n";
 }
