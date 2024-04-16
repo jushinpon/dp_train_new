@@ -12,8 +12,9 @@ use warnings;
 use Cwd;
 use POSIX;
 ###!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! You need to set the following parameters for your case !!!!!!!!!
-my @DLP_elements = ("Fe","Na","O","P");#your DLP element sequence
-my $force_upperbound = 50.0;# eV/A, the max force allowed in npy
+my @DLP_elements = ("Sn","Pb","Te");#your DLP element sequence
+my $force_upperbound = 50.0;# eV/A, the max force absolute value allowed in npy
+my $virial_upperbound = 61.0;# eV/A^3 * Vol = eV in Unit , the max virial absolute value allowed in npy
 
 #Please set the following for $jobtype in order:
 #1. npy_only: get npy files and files in npy_conversion_info
@@ -68,6 +69,7 @@ my %system_setting;
 $system_setting{allIniStr} = \@folders;#"new";#check readme
 $system_setting{useFormationEnergy} = "no";#if "yes", you need to prepare dpE2expE.dat in each folder under ./initial
 $system_setting{force_upperbound} = $force_upperbound;#force upper bound setting
+$system_setting{virial_upperbound} = $virial_upperbound;#virial upper bound setting
 $system_setting{doDFT4dpgen} = "no";#if "yes", you will do scf calculation and dp train for each iteration.
 $system_setting{doiniTrain} = "yes";#if "no", you must have old dp models and will use them for label.
 $system_setting{QE_pot_json} = "/opt/QEpot/SSSP_efficiency.json";#"new";#check readme

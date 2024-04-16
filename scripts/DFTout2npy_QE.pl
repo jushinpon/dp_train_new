@@ -24,6 +24,7 @@ my $currentPath = $ss_hr->{script_dir};
 my $ratio4val = $ss_hr->{ratio4val};#should assign dynamically
 my $useFormationEnergy = $ss_hr->{useFormationEnergy};
 my $force_upperbound = $ss_hr->{force_upperbound};
+my $virial_upperbound = $ss_hr->{virial_upperbound};
 my $dftBE_all = $npy_hr->{dftBE};
 my $expBE_be = $npy_hr->{expBE};
 my $npyout_dir =$npy_hr->{npyout_dir};#store raw and set folders
@@ -221,10 +222,28 @@ You need to do vc-relax, scf or drop this case by modifying all_setting.pm!\n" i
 				
 				push @virial, [$1*$kbar2evperang3*$cellVol[0],$2*$kbar2evperang3*$cellVol[0],$3*$kbar2evperang3*$cellVol[0]];
 	  			$vol_counter++;
+
+				if(max(map abs($_), @{$virial[-1]}[0..2]) > $virial_upperbound){
+					my @tempf = @{$virial[-1]}[0..2];				
+					print SK "**In file (virial problem): $out[$id]\n";
+					print SK "virial components: @tempf\n";
+					close(SK);
+					return;
+				}
+
+
 			}
 			else{
 				push @virial, [$1*$kbar2evperang3*$newcellVol[$temp - 1],$2*$kbar2evperang3*$newcellVol[$temp - 1],$3*$kbar2evperang3*$newcellVol[$temp - 1]];
 				$vol_counter++;
+				
+				if(max(map abs($_), @{$virial[-1]}[0..2]) > $virial_upperbound){
+					my @tempf = @{$virial[-1]}[0..2];				
+					print SK "**In file (virial problem): $out[$id]\n";
+					print SK "virial components: @tempf\n\n";
+					close(SK);
+					return;
+				}
 			}  
 			
 	  }
@@ -266,7 +285,7 @@ You need to do vc-relax, scf or drop this case by modifying all_setting.pm!\n" i
 				my @tempf = @{$force[$idf1]}[0..2];
 				my @Ryf = map{$_/$force_convert;} @tempf;
 				my $atomid = $idf1 - $temp + 1;
-				print SK "In file: $out[$id]\n";
+				print SK "In file (force problem): $out[$id]\n";
 				print SK "x,y, and z forces of atom $atomid:\n";
 				print SK "@tempf in eV/A\n";
 				print SK "@Ryf in Ry/Au\n\n";
@@ -286,10 +305,24 @@ You need to do vc-relax, scf or drop this case by modifying all_setting.pm!\n" i
 		my $id = $i -1;
 		@allforces = (@allforces,@{$fraw[$id]});
 	}
+
+	my @allvirial;
+	#print "input: $dftin[$id]\n";
+	for my $i (0..$#virial){
+		my $id = $i -1;
+		@allvirial = (@allvirial,@{$virial[$i]}[0..2]);
+	}
+	
+	#print "@allvirial\n";
+	
 	my $maxforce = sprintf("%.6f",max(map abs($_), @allforces));
+	my $maxvirial = sprintf("%.6f",max(map abs($_), @allvirial));
+	
 	print UD "**current file: $out[$id]\n"; 
 	print "Max force (eV/A): $maxforce\n";
+	print "Max virial (eV): $maxvirial\n";
 	print UD "Max force (eV/A): $maxforce\n";
+	print UD "Max virial (eV): $maxvirial\n\n";
 	
 ############## coord ############
 ##ATOMIC_POSITIONS (angstrom)        
