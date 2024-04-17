@@ -19,8 +19,8 @@ my $virial_upperbound = 61.0;# eV/A^3 * Vol = eV in Unit , the max virial absolu
 #Please set the following for $jobtype in order:
 #1. npy_only: get npy files and files in npy_conversion_info
 #2. dp_train: only do dp train with your npy files.
-#my $jobtype = "npy_only";
-my $jobtype = "dp_train";
+my $jobtype = "npy_only";
+#my $jobtype = "dp_train";
 
 #for label
 my $trainNo = 4;#4 for label, and 1 with a larger training step (20000000) for the final
