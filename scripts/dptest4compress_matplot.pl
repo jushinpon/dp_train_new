@@ -138,8 +138,8 @@ for (1..$trainNo){
     my $temp = sprintf("%02d",$_);
     chomp $temp;
     #`rm ./lcurve.out`;#remove old lcurve.out in current dir 
-    `cp  $mainPath/dp_train/graph$temp/lcurve_compress.out ./`;#for loss profiles
-    `cp  $mainPath/dp_train/graph$temp/lcurve_compress.out $mainPath/matplot_data4compress/lcurve4compress-graph$temp.out`;#for raw data
+    `cp  $mainPath/dp_train/graph$temp/lcurve.out ./`;#for loss profiles
+    `cp  $mainPath/dp_train/graph$temp/lcurve.out $mainPath/matplot_data4compress/lcurve4compress-graph$temp.out`;#for raw data
 
     for (0..$#make_plots){#train and validation
         #`rm ./temp.*.out`;#remove old dp test output files in current dir 

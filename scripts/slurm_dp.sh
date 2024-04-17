@@ -35,12 +35,12 @@ dp freeze -o graph4.pb
 #cp dp.dpout dp_ori.dpout
 sleep 3
 echo " "
-echo "###Compress dp train starts"
+echo "###Compress the graph"
 echo " "
 
 #sed_anchor04
 dp compress -i graph.pb -o graph-compress.pb
 #sed_anchor05
-dp train input.json --init-frz-model graph-compress.pb
-sleep 60
+#dp train input.json --init-frz-model graph-compress.pb
+#sleep 60
 echo "Done" > train_done.txt

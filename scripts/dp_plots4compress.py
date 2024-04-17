@@ -4,7 +4,7 @@ fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2)
 
 #plt.figure(tight_layout=True, figsize=(8, 8), dpi=150)
 
-data = np.genfromtxt("./lcurve_compress.out", names=True)
+data = np.genfromtxt("./lcurve.out", names=True)
 #print (data)
 for name in data.dtype.names[1:-1]:
     ax1.plot(data['step'], data[name], label=name)
