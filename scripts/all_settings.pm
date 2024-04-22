@@ -16,14 +16,16 @@ my @DLP_elements = ("Sn","Pb","Te");#your DLP element sequence
 my $force_upperbound = 50.0;# eV/A, the max force absolute value allowed in npy
 my $virial_upperbound = 61.0;# eV/A^3 * Vol = eV in Unit , the max virial absolute value allowed in npy
 
+my $ener_upperbound = -142133;# larger than which is not used (eV)
+my $ener_lowerbound = -390583.546764205;## smaller than which is not used (eV)
 #Please set the following for $jobtype in order:
 #1. npy_only: get npy files and files in npy_conversion_info
 #2. dp_train: only do dp train with your npy files.
 my $jobtype = "npy_only";
 #my $jobtype = "dp_train";
 
-#for label
-my $trainNo = 4;#4 for label, and 1 with a larger training step (20000000) for the final
+#for label and final training 
+my $trainNo = 1;#4 for label, and 1 with a larger training step (20000000) for the final
 my $trainstep = 100000;# 2500000 for final training
 my $compress_trainstep = $trainstep;#(useless!!!!!!)
 
@@ -70,6 +72,8 @@ $system_setting{allIniStr} = \@folders;#"new";#check readme
 $system_setting{useFormationEnergy} = "no";#if "yes", you need to prepare dpE2expE.dat in each folder under ./initial
 $system_setting{force_upperbound} = $force_upperbound;#force upper bound setting
 $system_setting{virial_upperbound} = $virial_upperbound;#virial upper bound setting
+$system_setting{ener_upperbound} = $ener_upperbound;#energy upper bound setting
+$system_setting{ener_lowerbound} = $ener_lowerbound;#virial upper bound setting
 $system_setting{doDFT4dpgen} = "no";#if "yes", you will do scf calculation and dp train for each iteration.
 $system_setting{doiniTrain} = "yes";#if "no", you must have old dp models and will use them for label.
 $system_setting{QE_pot_json} = "/opt/QEpot/SSSP_efficiency.json";#"new";#check readme

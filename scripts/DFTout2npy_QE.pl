@@ -25,6 +25,11 @@ my $ratio4val = $ss_hr->{ratio4val};#should assign dynamically
 my $useFormationEnergy = $ss_hr->{useFormationEnergy};
 my $force_upperbound = $ss_hr->{force_upperbound};
 my $virial_upperbound = $ss_hr->{virial_upperbound};
+
+my $ener_upperbound = $ss_hr->{ener_upperbound};
+my $ener_lowerbound = $ss_hr->{ener_lowerbound};
+
+
 my $dftBE_all = $npy_hr->{dftBE};
 my $expBE_be = $npy_hr->{expBE};
 my $npyout_dir =$npy_hr->{npyout_dir};#store raw and set folders
@@ -178,7 +183,22 @@ for my $id (0..$#out){
 		print "no total energy was found in $out[$id] or dft calculation failed!!\n";
 	    return
 	}
-    for (@totalenergy){chomp;push @eraw,$_}
+    for (@totalenergy){
+		chomp;
+		if($_ >= $ener_lowerbound and $_ <= $ener_upperbound){
+			push @eraw,$_;			
+		}
+		else{
+			#print "energy: $_\n";
+			#print "lower: $ener_lowerbound\n";
+			#print "upper: $ener_upperbound\n";			
+			print SK "In file (energy problem): $out[$id]\n";
+			print SK "$_ in eV\n\n";
+			close(SK);
+			return;
+		}
+		
+	}
 	$energyNo = @totalenergy;
 	#for (1..@eraw){my $id = $_ -1; print "$id $eraw[$id]\n";}
 

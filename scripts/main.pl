@@ -176,11 +176,11 @@ if($jobtype eq "npy_only"){# a brand new dpgen job. No previous labeled npy file
     `mkdir -p $mainPath/all_npy`;
     `mkdir -p $mainPath/npy_conversion_info`;
     open(SK, "> $mainPath/npy_conversion_info/skipped_sout.dat") or die $!;
-    print SK "##The following info presents the files with atomic force over the force upper bound (current setting: $force_upperbound eV/A)!\n\n";
+    print SK "##The following info presents the files with atomic force, virial, or energy over the upper or below the lower bound (check all_settings.pm)!\n\n";
     close(SK);
 
     open(UD, "> $mainPath/npy_conversion_info/used_sout.dat") or die $!;
-    print UD "##The following info shows the files with all atomic forces below the force upper bound (current setting: $force_upperbound eV/A)!\n\n";
+    print UD "##The following info shows the files with proper atomic force, virial, and energy (check all_settings.pm)!\n\n";
     close(UD);
 
     #the following loop also check the required files in the corresponding folder
