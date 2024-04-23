@@ -16,8 +16,8 @@ my @DLP_elements = ("Sn","Pb","Te");#your DLP element sequence
 my $force_upperbound = 50.0;# eV/A, the max force absolute value allowed in npy
 my $virial_upperbound = 61.0;# eV/A^3 * Vol = eV in Unit , the max virial absolute value allowed in npy
 
-my $ener_upperbound = -142133;# larger than which is not used (eV)
-my $ener_lowerbound = -390583.546764205;## smaller than which is not used (eV)
+my $ener_upperbound = -6102;# larger than which is not used (eV/atom)
+my $ener_lowerbound = -11844.2;## smaller than which is not used (eV/atom)
 #Please set the following for $jobtype in order:
 #1. npy_only: get npy files and files in npy_conversion_info
 #2. dp_train: only do dp train with your npy files.

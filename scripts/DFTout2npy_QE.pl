@@ -185,7 +185,8 @@ for my $id (0..$#out){
 	}
     for (@totalenergy){
 		chomp;
-		if($_ >= $ener_lowerbound and $_ <= $ener_upperbound){
+		my $temp = $_/$natom;
+		if($temp >= $ener_lowerbound and $temp <= $ener_upperbound){
 			push @eraw,$_;			
 		}
 		else{
@@ -193,7 +194,7 @@ for my $id (0..$#out){
 			#print "lower: $ener_lowerbound\n";
 			#print "upper: $ener_upperbound\n";			
 			print SK "In file (energy problem): $out[$id]\n";
-			print SK "$_ in eV\n\n";
+			print SK "$temp in eV\n\n";
 			close(SK);
 			return;
 		}
