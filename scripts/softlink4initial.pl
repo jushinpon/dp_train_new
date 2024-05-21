@@ -6,20 +6,11 @@ use strict;
 open(BAD, "> ./bad_files_checkbysoftlink.dat") or die $!;
 print BAD "#The following files are bad and filtered by softlink4initial.pl\n"; 
 #####make link for labelled folders
-my $include_labelled = "no";#if yes, you need to provide parent paths of your labelled folders (@all_labelled) 
+my $include_labelled = "yes";#if yes, you need to provide parent paths of your labelled folders (@all_labelled) 
 my @all_labelled;
 if($include_labelled eq "yes"){
     @all_labelled = qw(
-        /home/ben/dpgen/new_allnpy05/all_cfgs/
-        /home/ben/dpgen/new-2_allnpy06/all_cfgs/
-        /home/ben/dpgen/new-3_allnpy07/all_cfgs/
-        /home/ben/dpgen/new-4_allnpy08/all_cfgs/
-        /home/ben/dpgen/new-5_allnpy09/all_cfgs/
-        /home/ben/dpgen/new-6_allnpy10/all_cfgs/
-        /home/ben/dpgen/tension_label_allnpy11/all_cfgs/
-        /home/ben/dpgen/tension_label-2_allnpy12/all_cfgs/
-        /home/ben/dpgen/heating-1_allnpy13/all_cfgs/
-        /home/ben/dpgen/heating-2_allnpy14/all_cfgs/
+        /home/jsp/SnPbTe_alloys/dp_train_label/thermo_label
     );
     map { s/^\s+|\s+$//g; } @all_labelled;
 }
@@ -28,7 +19,8 @@ if($include_labelled eq "yes"){
 my @all_inifolder;
 #!!! make the following if you have place everything in the initial folder
 @all_inifolder= qw(
-    /home/jsp1/test/perl4dpgen_20221025/initial
+    /home/jsp/SnPbTe_alloys/make_B2_related_data/QEall_set/
+    /home/jsp/SnPbTe_alloys/QE_from_MatCld/QEall_set/
 );
 map { s/^\s+|\s+$//g; } @all_inifolder;
 
@@ -50,6 +42,9 @@ for my $i (@all_ini){
     my $relax = `grep -e relax -e vc-relax $i/$temp[-1].in`;
        $relax =~ s/^\s+|\s+$//g;
     
+    my $scf = `grep scf $i/$temp[-1].in`;
+       $scf =~ s/^\s+|\s+$//g;
+
     my $nonCon = `grep "convergence NOT achieved" $i/$temp[-1].sout`;
        $nonCon =~ s/^\s+|\s+$//g;
 
@@ -59,6 +54,15 @@ for my $i (@all_ini){
        #     print "ini convergence NOT achieved: $i/$temp[-1].sout\n";
        #    
        # }
+    if($scf){
+        my @stresses = `grep "total   stress"  $i/$temp[-1].sout`;
+        map { s/^\s+|\s+$//g; } @stresses;
+        if (@stresses > 1){
+            print BAD "bad scf output: $i/$temp[-1].sout\n";
+            next;
+        }
+    }
+
        #convergence NOT achieved
     if (!($relax =~ m/relax/) and ($jobdone =~ m/JOB DONE/) and !($nonCon =~ m/convergence NOT achieved/)){   
         `mkdir ../initial/$temp[-1]`;        
@@ -136,7 +140,15 @@ if($include_labelled eq "yes"){
 
             my $jobdone = `grep "JOB DONE" $i/$basename.sout`;
                $jobdone =~ s/^\s+|\s+$//g;
-      
+            
+            # some strange output!     
+            my @stresses = `grep "total   stress"  $i/$basename.sout`;
+            map { s/^\s+|\s+$//g; } @stresses;
+            if (@stresses > 1){
+                print BAD "bad scf output: $i/$basename.sout\n";
+                next;
+            }
+
             if (!($relax =~ m/relax/) and ($jobdone =~ m/JOB DONE/) and !($nonCon =~ m/convergence NOT achieved/) ){   
                     `mkdir ../initial/$index`;
                     `cp $i/$basename.sout ../initial/$index/$index.sout`;

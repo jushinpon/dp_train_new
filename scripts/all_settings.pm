@@ -13,20 +13,20 @@ use Cwd;
 use POSIX;
 ###!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! You need to set the following parameters for your case !!!!!!!!!
 my @DLP_elements = ("Sn","Pb","Te");#your DLP element sequence
-my $force_upperbound = 50.0;# eV/A, the max force absolute value allowed in npy
-my $virial_upperbound = 61.0;# eV/A^3 * Vol = eV in Unit , the max virial absolute value allowed in npy
+my $force_upperbound = 20.0;# eV/A, the max force absolute value allowed in npy
+my $virial_upperbound = 50.0;# eV/A^3 * Vol = eV in Unit , the max virial absolute value allowed in npy
 
-my $ener_upperbound = -6102;# larger than which is not used (eV/atom)
-my $ener_lowerbound = -11844.2;## smaller than which is not used (eV/atom)
+my $ener_upperbound = 0;# larger than which is not used (eV/atom)
+my $ener_lowerbound = -1e10;## smaller than which is not used (eV/atom)
 #Please set the following for $jobtype in order:
 #1. npy_only: get npy files and files in npy_conversion_info
 #2. dp_train: only do dp train with your npy files.
-my $jobtype = "npy_only";
-#my $jobtype = "dp_train";
+#my $jobtype = "npy_only";
+my $jobtype = "dp_train";
 
 #for label and final training 
-my $trainNo = 1;#4 for label, and 1 with a larger training step (20000000) for the final
-my $trainstep = 100000;# 2500000 for final training
+my $trainNo = 4;#4 for label, and 1 with a larger training step (20000000) for the final
+my $trainstep = 1000000;# 2500000 for final training
 my $compress_trainstep = $trainstep;#(useless!!!!!!)
 
 ###IMPORTANT, PLEASE READ THE FOLLOWING FOR THE FINAL TRAININ!##########
@@ -95,7 +95,7 @@ $system_setting{T_lo} = 300;#the lowest temperature for lammps (integer)
 $system_setting{T_incNo} = 3;#total increment number from T_lo to T_hi,
 #the total temperature number considered is the above value + 1;
 $system_setting{T_No} = 2;#how many temperatures you want to consider within a temperature range, at lease 2
-$system_setting{ratio4val} = 0.2;#ratio of total data number to be valiation data
+$system_setting{ratio4val} = 0.05;#ratio of total data number to be valiation data
 
 my %dptrain_setting; 
 $dptrain_setting{type_map} = [@DLP_elements];# json template file
