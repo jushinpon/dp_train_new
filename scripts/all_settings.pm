@@ -12,9 +12,9 @@ use warnings;
 use Cwd;
 use POSIX;
 ###!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! You need to set the following parameters for your case !!!!!!!!!
-my @DLP_elements = ("Sn","Pb","Te");#your DLP element sequence
-my $force_upperbound = 20.0;# eV/A, the max force absolute value allowed in npy
-my $virial_upperbound = 50.0;# eV/A^3 * Vol = eV in Unit , the max virial absolute value allowed in npy
+my @DLP_elements = ("Al","P");#your DLP element sequence
+my $force_upperbound = 200.0;# eV/A, the max force absolute value allowed in npy
+my $virial_upperbound = 500.0;# eV/A^3 * Vol = eV in Unit , the max virial absolute value allowed in npy
 
 my $ener_upperbound = 0;# larger than which is not used (eV/atom)
 my $ener_lowerbound = -1e10;## smaller than which is not used (eV/atom)
@@ -25,7 +25,7 @@ my $ener_lowerbound = -1e10;## smaller than which is not used (eV/atom)
 my $jobtype = "dp_train";
 
 #for label and final training 
-my $trainNo = 4;#4 for label, and 1 with a larger training step (20000000) for the final
+my $trainNo = 2;#4 for label, and 1 with a larger training step (20000000) for the final
 my $trainstep = 1000000;# 2500000 for final training
 my $compress_trainstep = $trainstep;#(useless!!!!!!)
 
@@ -40,8 +40,8 @@ my $compress_trainstep = $trainstep;#(useless!!!!!!)
 #my $compress_trainstep = $trainstep*4;
 
 #check deepMD papers for the following three of your material
-my $rcut = 6.00000000000001;
-my $rcut_smth = 5.8000000001;
+my $rcut = 9.00000000000001;
+my $rcut_smth = 8.5000000001;
 my $descriptor_type = "se_a";
 
 #########end of parameter settings
