@@ -12,9 +12,9 @@ use warnings;
 use Cwd;
 use POSIX;
 ###!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! You need to set the following parameters for your case !!!!!!!!!
-my @DLP_elements = ("Al","P");#your DLP element sequence
-my $force_upperbound = 200.0;# eV/A, the max force absolute value allowed in npy
-my $virial_upperbound = 500.0;# eV/A^3 * Vol = eV in Unit , the max virial absolute value allowed in npy
+my @DLP_elements = ("Sn","Pb","Te");#your DLP element sequence
+my $force_upperbound = 2000.0;# eV/A, the max force absolute value allowed in npy
+my $virial_upperbound = 5000.0;# eV/A^3 * Vol = eV in Unit , the max virial absolute value allowed in npy
 
 my $ener_upperbound = 0;# larger than which is not used (eV/atom)
 my $ener_lowerbound = -1e10;## smaller than which is not used (eV/atom)
@@ -25,8 +25,8 @@ my $ener_lowerbound = -1e10;## smaller than which is not used (eV/atom)
 my $jobtype = "dp_train";
 
 #for label and final training 
-my $trainNo = 2;#4 for label, and 1 with a larger training step (20000000) for the final
-my $trainstep = 1000000;# 2500000 for final training
+my $trainNo = 1;#4 for label, and 1 with a larger training step (20000000) for the final
+my $trainstep = 2500000;# 2500000 for final training
 my $compress_trainstep = $trainstep;#(useless!!!!!!)
 
 ###IMPORTANT, PLEASE READ THE FOLLOWING FOR THE FINAL TRAININ!##########
