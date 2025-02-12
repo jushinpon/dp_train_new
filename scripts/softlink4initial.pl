@@ -21,6 +21,13 @@ my @all_inifolder;
 @all_inifolder= qw(
     /home/jsp/2H-WTe2/QE_from_MatCld/QEall_set/
     /home/jsp/2H-WTe2/QE4heat/softlink4training/
+#/home/jsp/SnPbTe_alloys/make_B2_related_data/QEall_set/
+#/home/jsp/SnPbTe_alloys/make_surface_20240919/QEall_set/
+#/home/jsp/SnPbTe_alloys/QE_from_MatCld/QEall_set/
+@all_inifolder= qw(    
+    /home/jsp/SnPbTe_alloys/make_B2_related_data/QEall_set/
+    /home/jsp/SnPbTe_alloys/make_surface_20240919/QEall_set/
+   /home/jsp/SnPbTe_alloys/QE_from_MatCld/QEall_set/
 );
 map { s/^\s+|\s+$//g; } @all_inifolder;
 
