@@ -19,8 +19,8 @@ if($include_labelled eq "yes"){
 my @all_inifolder;
 #!!! make the following if you have place everything in the initial folder
 @all_inifolder= qw(
-    /home/jsp1/AlP/QE_from_MatCld/QEall_set/
-    /home/jsp1/AlP/QE4heat/heating/
+    /home/jsp/2H-WTe2/QE_from_MatCld/QEall_set/
+    /home/jsp/2H-WTe2/QE4heat/softlink4training/
 );
 map { s/^\s+|\s+$//g; } @all_inifolder;
 
