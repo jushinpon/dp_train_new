@@ -6,11 +6,11 @@ use strict;
 open(BAD, "> ./bad_files_checkbysoftlink.dat") or die $!;
 print BAD "#The following files are bad and filtered by softlink4initial.pl\n"; 
 #####make link for labelled folders
-my $include_labelled = "no";#if yes, you need to provide parent paths of your labelled folders (@all_labelled) 
+my $include_labelled = "yes";#if yes, you need to provide parent paths of your labelled folders (@all_labelled) 
 my @all_labelled;
 if($include_labelled eq "yes"){
     @all_labelled = qw(
-        /home/jsp/SnPbTe_alloys/dp_train_label/thermo_label
+        /home/jsp1/AlP/dp_train_label/thermo_label
     );
     map { s/^\s+|\s+$//g; } @all_labelled;
 }

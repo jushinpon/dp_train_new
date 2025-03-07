@@ -220,10 +220,18 @@ for (1..$trainNo){
 
 # end of energy normalization
         if(-e "/opt/anaconda3/bin/activate"){
-            system ("bash -c 'source /opt/anaconda3/bin/activate base;python dp_plots4compress.py'");
+            #system ("conda info --envs");
+            system ("/opt/anaconda3/bin/python dp_plots4compress.py");
+            #system ("bash -c 'source /opt/anaconda3/bin/activate base;python dp_plots4compress.py'");
+            #system ("conda info --envs");
+
         }
         else{
-            system ("bash -c 'source /opt/miniconda3/bin/activate base;python dp_plots4compress.py'");
+            #system ("conda info --envs");           
+            system ("/opt/miniconda3/bin/python dp_plots4compress.py");
+            #system ("bash -c 'source /opt/miniconda3/bin/activate base;python dp_plots4compress.py'");
+            #system ("conda info --envs");
+
         }
         sleep(1);
         `mv ./dp_temp.png $mainPath/matplot4compress/00$make_plots[$_]-graph$temp.png`;    

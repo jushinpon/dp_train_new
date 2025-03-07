@@ -25,8 +25,8 @@ my $ener_lowerbound = -1e10;## smaller than which is not used (eV/atom)
 my $jobtype = "dp_train";
 
 #for label and final training 
-my $trainNo = 3;#4 for label, and 1 with a larger training step (20000000) for the final
-my $trainstep = 1000000;# 2500000 for final training
+my $trainNo = 1;#4 for label, and 1 with a larger training step (20000000) for the final
+my $trainstep = 3000000;# 2500000 for final training
 my $compress_trainstep = $trainstep;#(useless!!!!!!)
 
 ###IMPORTANT, PLEASE READ THE FOLLOWING FOR THE FINAL TRAININ!##########
