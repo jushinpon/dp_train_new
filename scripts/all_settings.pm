@@ -26,7 +26,7 @@ my $jobtype = "dp_train";
 
 #for label and final training 
 my $trainNo = 1;#4 for label, and 1 with a larger training step (20000000) for the final
-my $trainstep = 2500000;# 2500000 for final training
+my $trainstep = 2000000;# 2500000 for final training
 my $compress_trainstep = $trainstep;#(useless!!!!!!)
 
 ###IMPORTANT, PLEASE READ THE FOLLOWING FOR THE FINAL TRAININ!##########
@@ -41,7 +41,7 @@ my $compress_trainstep = $trainstep;#(useless!!!!!!)
 
 #check deepMD papers for the following three of your material
 my $rcut = 9.00000000000001;
-my $rcut_smth = 8.5000000001;
+my $rcut_smth = 2.5000000001;
 my $descriptor_type = "se_a";
 
 #########end of parameter settings

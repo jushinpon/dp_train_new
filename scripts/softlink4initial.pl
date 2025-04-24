@@ -6,7 +6,7 @@ use strict;
 open(BAD, "> ./bad_files_checkbysoftlink.dat") or die $!;
 print BAD "#The following files are bad and filtered by softlink4initial.pl\n"; 
 #####make link for labelled folders
-my $include_labelled = "no";#if yes, you need to provide parent paths of your labelled folders (@all_labelled) 
+my $include_labelled = "yes";#if yes, you need to provide parent paths of your labelled folders (@all_labelled) 
 my @all_labelled;
 if($include_labelled eq "yes"){
     @all_labelled = qw(
@@ -25,6 +25,7 @@ my @all_inifolder;
     /home/jsp/SnPbTe_alloys/make_B2_related_data/QEall_set/
     /home/jsp/SnPbTe_alloys/make_surface_20240919/QEall_set/
    /home/jsp/SnPbTe_alloys/QE_from_MatCld/QEall_set/
+   /home/jsp/SnPbTe_alloys/QE4heat/heating/
 );
 map { s/^\s+|\s+$//g; } @all_inifolder;
 

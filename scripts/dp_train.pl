@@ -20,6 +20,21 @@ my @type_map = @{$dps_hr->{type_map}};
 my $working_dir = $dps_hr->{working_dir};#training folder
 my $json_script = $dps_hr->{json_script};#json template
 my $json_outdir = $dps_hr->{json_outdir};#modified json output dir
+
+#the follwoing is the base weight for probability of each type of data
+my $ajustProb = "yes";
+my %Prob = (
+    'mp_pattern'    => 0.1,
+    'surface'   => 0.1,
+    #'label'         =  [],
+    'others'        => 0.6, #mainly for homemade
+    'heating'        => 0.2 
+);
+
+# Define the keywords that should be classified as "others" if you want to filter them out
+my @keywords = ("mp-1883","mp-19717");
+my %keyword_hash = map { $_ => 1 } @keywords;  # Convert list to hash for fast lookup
+
 #### modify json file for dpmd-kit, need to be done in main script
 my $json;
 {
@@ -46,6 +61,108 @@ for my $v (@allnpy_folder){
 die "No val folder for your system. Try to  use a smaller number for \$set_No in all_setting.pm" unless(@allnpy_Trafolder);
 map { s/^\s+|\s+$//g; } @allnpy_Valfolder;
 map { s/^\s+|\s+$//g; } @allnpy_Trafolder;
+my @prob;
+# Hashes to classify data
+my %categories = (
+    'mp_pattern'    => [],
+    'surface'   => [],
+    #'label'         => [],
+    'others'        => [], #mainly for homemade
+    'heating'        => [] 
+);
+
+for my $path (@allnpy_Trafolder){
+    $path =~ s/\/$//g;#remove the last /
+
+    #find folders with keyword in the path
+    if ($path =~ /_mp-(\d+)-T/) {
+        my $basename = "mp-$1";
+
+        # Check if it matches a keyword (move to "others" category)
+        if (exists $keyword_hash{$basename}) {
+            push @{ $categories{'others'} }, $path;
+            next;
+        }
+    }
+
+    if ($path =~ /^(?!.*-P0).*/) {
+        push @{ $categories{'heating'} }, $path;
+    }
+    elsif ($path =~ /_mp-\d+-T\d+-P0/) {
+        push @{ $categories{'mp_pattern'} }, $path;
+    }
+    elsif ($path =~ /_\d{3}-T/) {
+        push @{ $categories{'surface'} }, $path;
+    }
+    #elsif ($path =~ /label/i) {
+    #    push @{ $categories{'label'} }, $path;
+    #}
+    else {
+        push @{ $categories{'others'} }, $path;
+    }    
+    #print "$_\n";
+    
+    }
+
+#
+
+# Create probability array
+my @cat_nonzero;
+my @prob;
+my @allnpy_Trafolder_temp;
+for my $cat (sort keys %categories) {
+    my $cat_size = @{ $categories{$cat} };
+    if ($cat_size > 0) {
+        push @cat_nonzero, $cat;
+        push @prob,$Prob{$cat};
+        @allnpy_Trafolder_temp = (@allnpy_Trafolder_temp,@{ $categories{$cat} });
+        #print "$cat,$Prob{$cat}\n";        
+    }
+}
+
+@allnpy_Trafolder = @allnpy_Trafolder_temp;
+# Calculate the total sum of probabilities
+my $sum_prob = 0;
+$sum_prob += $_ for @prob;
+
+# Normalize probabilities so their total is 1
+@prob = map { $_ / $sum_prob } @prob;
+
+my @range;
+my $start = 0;
+my $end = 0;
+for my $c (0..$#cat_nonzero) {
+    my $cat = $cat_nonzero[$c];
+    my $prob = $prob[$c];
+    my $cat_size = @{ $categories{$cat} };
+    $end = $start + $cat_size;
+    push @range, "$start:$end:$prob";
+    #print "$cat, $start:$end:$prob\n";
+    $start = $start + $cat_size;
+}
+my $prob = join(";", ("prob_sys_size",@range));
+#my @prob = map { 
+#    my $val = $_; 
+#    grep { $val eq $_ } @prob_patterns ? $prob_weight : 0.1 
+#} @all_train_dataset;
+if($ajustProb eq "yes"){
+   $decoded->{training}->{training_data}->{auto_prob} = $prob;#clean it first
+}
+
+###########
+
+# Print results
+unlink 'PROB.txt' if (-e 'PROB.txt');
+foreach my $category (  sort keys %categories) {
+    print "\n$category:\n";
+    `echo $category: >> PROB.txt`;
+    for (@{ $categories{$category}}) {
+        my $path = $_;
+        $path =~ s/\/$//g;#remove the last /
+        print "$path\n";
+        `echo $path >> PROB.txt`;
+    };
+}
 ##modify set folders' parent path
 $decoded->{training}->{training_data}->{systems} = [@allnpy_Trafolder];#clean it first
 #find folders with /val
