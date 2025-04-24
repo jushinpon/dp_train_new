@@ -3,9 +3,9 @@ use strict;
 use warnings;
 
 # Define directories
-my $exp_dir = '/home/jsp/SnPbTe_alloys/QE_from_MatCld/cifs_exp';
-my $theory_dir = '/home/jsp/SnPbTe_alloys/QE_from_MatCld/cifs_theory';
-my $initial_dir = '/home/jsp/SnPbTe_alloys/dp_train_new/initial';
+my $exp_dir = '/home/jsp1/AlP/QE_from_MatCld/cifs_exp';
+my $theory_dir = '/home/jsp1/AlP/QE_from_MatCld/cifs_theory';
+my $initial_dir = '/home/jsp1/AlP/dp_train_new/initial';
 
 # 1. Get all CIF files in cifs_exp, remove extensions, and place prefixes in @exp array
 my @exp = get_cif_prefixes($exp_dir);
@@ -13,10 +13,11 @@ my @exp = get_cif_prefixes($exp_dir);
 # 2. Get CIF files in cifs_theory with both Sn and Pb in prefix, remove extensions, and place prefixes in @theory array
 our @notrequired = ('Te');#elements not required in prefix
 
-my @theory = get_cif_prefixes($theory_dir, 'Sn', 'Pb');
+my @theory = get_cif_prefixes($theory_dir, 'Al', 'P');
 #print "@theory\n";
 #die;
 # 3. Keep folders in initial directory with patterns in @exp or @theory, as well as those without "mp-xxxx"
+#filter_initial_folders($initial_dir, \@exp);
 filter_initial_folders($initial_dir, \@exp, \@theory);
 
 sub get_cif_prefixes {

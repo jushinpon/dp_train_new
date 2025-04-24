@@ -12,9 +12,9 @@ use warnings;
 use Cwd;
 use POSIX;
 ###!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! You need to set the following parameters for your case !!!!!!!!!
-my @DLP_elements = ("Sn","Pb","Te");#your DLP element sequence
-my $force_upperbound = 2000.0;# eV/A, the max force absolute value allowed in npy
-my $virial_upperbound = 5000.0;# eV/A^3 * Vol = eV in Unit , the max virial absolute value allowed in npy
+my @DLP_elements = ("Al","P");#your DLP element sequence
+my $force_upperbound = 200.0;# eV/A, the max force absolute value allowed in npy
+my $virial_upperbound = 500.0;# eV/A^3 * Vol = eV in Unit , the max virial absolute value allowed in npy
 
 my $ener_upperbound = 0;# larger than which is not used (eV/atom)
 my $ener_lowerbound = -1e10;## smaller than which is not used (eV/atom)

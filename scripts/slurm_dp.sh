@@ -6,11 +6,13 @@
 ##SBATCH --cpus-per-task=1
 ##SBATCH --ntasks-per-node=8
 #SBATCH --partition=All
+#SBATCH --nodelist=master
 ##SBATCH --ntasks-per-node=12
 ##SBATCH --reservation=GPU_test
 ##SBATCH --exclude=node18,node20
 ##SBATCH --gres=gpu:0
-
+##SBATCH --reservation=script_test
+##SBATCH --reservation=script_test
 hostname
 
 if [ -f /opt/anaconda3/bin/activate ]; then
@@ -31,7 +33,13 @@ fi
 #always use one node for training
 node=1
 #threads per core (for all our PCs)
-threads=$(nproc)
+# Set threads based on hostname
+if [ "$(hostname)" = "master" ]; then
+    threads=24
+else
+    threads=$(nproc)
+fi
+#threads=$(nproc)
 processors=$(nproc)
 np=$(($node*$processors/$threads))
 

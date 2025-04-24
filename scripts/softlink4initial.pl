@@ -10,7 +10,7 @@ my $include_labelled = "yes";#if yes, you need to provide parent paths of your l
 my @all_labelled;
 if($include_labelled eq "yes"){
     @all_labelled = qw(
-        /home/jsp/SnPbTe_alloys/dp_train_label/thermo_label
+        /home/jsp1/AlP/dp_train_label/thermo_label
     );
     map { s/^\s+|\s+$//g; } @all_labelled;
 }
@@ -18,9 +18,6 @@ if($include_labelled eq "yes"){
 #for initial folder
 my @all_inifolder;
 #!!! make the following if you have place everything in the initial folder
-#/home/jsp/SnPbTe_alloys/make_B2_related_data/QEall_set/
-#/home/jsp/SnPbTe_alloys/make_surface_20240919/QEall_set/
-#/home/jsp/SnPbTe_alloys/QE_from_MatCld/QEall_set/
 @all_inifolder= qw(    
     /home/jsp/SnPbTe_alloys/make_B2_related_data/QEall_set/
     /home/jsp/SnPbTe_alloys/make_surface_20240919/QEall_set/

@@ -158,10 +158,10 @@ for (1..$trainNo){
         print "**\$dataNu: $dataNu\n";
         #system("bash -c 'source /opt/anaconda3/bin/activate deepmd-cpu'");
         if(-e "/opt/anaconda3/bin/activate"){
-            system("bash -c 'source /opt/anaconda3/bin/activate deepmd-cpu;dp test -n $dataNu -m $mainPath/dp_train/graph$temp/graph-compress$temp.pb -s $source -d ./temp.out -v 0 2>&1 >/dev/null'");
+            system("bash -c 'source /opt/anaconda3/bin/activate deepmd-cpu-v3;dp test -n $dataNu -m $mainPath/dp_train/graph$temp/graph-compress$temp.pb -s $source -d ./temp.out -v 0 2>&1 >/dev/null'");
         }
         else{
-            system("bash -c 'source /opt/miniconda3/bin/activate deepmd-cpu;dp test -n $dataNu -m $mainPath/dp_train/graph$temp/graph-compress$temp.pb -s $source -d ./temp.out -v 0 2>&1 >/dev/null'");
+            system("bash -c 'source /opt/miniconda3/bin/activate deepmd-cpu-v3;dp test -n $dataNu -m $mainPath/dp_train/graph$temp/graph-compress$temp.pb -s $source -d ./temp.out -v 0 2>&1 >/dev/null'");
         }#system("dp test -n $dataNu -m $mainPath/dp_train/graph$temp/graph$temp.pb -s $source -d ./temp.out -v 0 2>&1 >/dev/null");
 
 # get atom number for normalizing energy
@@ -220,10 +220,18 @@ for (1..$trainNo){
 
 # end of energy normalization
         if(-e "/opt/anaconda3/bin/activate"){
-            system ("bash -c 'source /opt/anaconda3/bin/activate base;python dp_plots4compress.py'");
+            #system ("conda info --envs");
+            system ("/opt/anaconda3/bin/python dp_plots4compress.py");
+            #system ("bash -c 'source /opt/anaconda3/bin/activate base;python dp_plots4compress.py'");
+            #system ("conda info --envs");
+
         }
         else{
-            system ("bash -c 'source /opt/miniconda3/bin/activate base;python dp_plots4compress.py'");
+            #system ("conda info --envs");           
+            system ("/opt/miniconda3/bin/python dp_plots4compress.py");
+            #system ("bash -c 'source /opt/miniconda3/bin/activate base;python dp_plots4compress.py'");
+            #system ("conda info --envs");
+
         }
         sleep(1);
         `mv ./dp_temp.png $mainPath/matplot4compress/00$make_plots[$_]-graph$temp.png`;    
