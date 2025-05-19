@@ -34,6 +34,8 @@ my %Prob = (
 # Define the keywords that should be classified as "others" if you want to filter them out
 my @keywords = ("mp-1883","mp-19717");
 my %keyword_hash = map { $_ => 1 } @keywords;  # Convert list to hash for fast lookup
+my $use_hybrid = $dps_hr->{use_hybrid};#use hybrid or not
+print "!!!!use hybrid: $use_hybrid\n";
 
 #### modify json file for dpmd-kit, need to be done in main script
 my $json;
@@ -163,6 +165,8 @@ foreach my $category (  sort keys %categories) {
         `echo $path >> PROB.txt`;
     };
 }
+
+
 ##modify set folders' parent path
 $decoded->{training}->{training_data}->{systems} = [@allnpy_Trafolder];#clean it first
 #find folders with /val
@@ -180,7 +184,7 @@ for (1..$trainNo){
     chomp $temp;
     my $seed1 = ceil(12345 * (rand() + $_ * rand()) );
 	chomp $seed1;
-    $decoded->{model}->{descriptor}->{seed} = $seed1;
+   # $decoded->{model}->{descriptor}->{seed} = $seed1;
     my $seed2 = ceil(12345 * (rand() + $_ * rand()));
 	chomp $seed2;
     $decoded->{model}->{fitting_net}->{seed} = $seed2;
@@ -193,10 +197,22 @@ for (1..$trainNo){
     $decoded->{training}->{save_freq} = $dps_hr->{save_freq};    
     $decoded->{training}->{disp_freq} = $dps_hr->{disp_freq};    
     $decoded->{learning_rate}->{start_lr} = $dps_hr->{start_lr};    
-    $decoded->{learning_rate}->{decay_steps} = $dps_hr->{decay_steps};    
-    $decoded->{model}->{descriptor}->{rcut} = $dps_hr->{rcut};    
-    $decoded->{model}->{descriptor}->{rcut_smth} = $dps_hr->{rcut_smth};    
-    $decoded->{model}->{descriptor}->{type} = $dps_hr->{descriptor_type};    
+    $decoded->{learning_rate}->{decay_steps} = $dps_hr->{decay_steps};
+    
+    if($use_hybrid eq "no"){
+        $decoded->{model}->{descriptor}->{seed} = $seed1;
+        $decoded->{model}->{descriptor}->{rcut} = $dps_hr->{rcut};    
+        $decoded->{model}->{descriptor}->{rcut_smth} = $dps_hr->{rcut_smth};    
+        $decoded->{model}->{descriptor}->{type} = $dps_hr->{descriptor_type};
+    }
+    else{
+        $decoded->{model}->{descriptor}->{list}->[0]->{seed} = $seed1;
+        my $seed4 = ceil(12345 * (rand() + $_ * rand()) );
+        chomp $seed4;
+        $decoded->{model}->{descriptor}->{list}->[1]->{seed} = $seed4;
+    }
+
+
     {
         local $| = 1;
         open my $fh, '>', "$json_outdir/graph$temp.json";

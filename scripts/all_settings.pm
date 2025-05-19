@@ -21,7 +21,7 @@ my $ener_lowerbound = -1e10;## smaller than which is not used (eV/atom)
 #Please set the following for $jobtype in order:
 #1. npy_only: get npy files and files in npy_conversion_info
 #2. dp_train: only do dp train with your npy files.
-#my $jobtype = "npy_only";
+#y $jobtype = "npy_only";
 my $jobtype = "dp_train";
 
 #for label and final training 
@@ -38,8 +38,10 @@ my $compress_trainstep = $trainstep;#(useless!!!!!!)
 #my $trainNo = 1;#4 for label, and 1 with a larger training step (20000000) for the final
 #my $trainstep = 2000000;
 #my $compress_trainstep = $trainstep*4;
+my $use_hybrid = "yes";#if "yes", you need to use the hybrid setting in json template file
 
 #check deepMD papers for the following three of your material
+#if you use hybrid, the following three parameters are useless
 my $rcut = 9.00000000000001;
 my $rcut_smth = 2.5000000001;
 my $descriptor_type = "se_a";
@@ -98,6 +100,7 @@ $system_setting{T_No} = 2;#how many temperatures you want to consider within a t
 $system_setting{ratio4val} = 0.05;#ratio of total data number to be valiation data
 
 my %dptrain_setting; 
+$dptrain_setting{use_hybrid} = $use_hybrid;# json template file
 $dptrain_setting{type_map} = [@DLP_elements];# json template file
 $dptrain_setting{json_script} = "$currentPath/template.json";# json template file
 $dptrain_setting{json_outdir} = "$mainPath/dp_train";
@@ -107,7 +110,7 @@ $dptrain_setting{compresstrainstep} = $compress_trainstep;
 $dptrain_setting{final_trainstep} = 200000;
 $dptrain_setting{final_compresstrainstep} = 400000;
 #lr(t) = start_lr * decay_rate ^ ( t / decay_steps ),default decay_rate:0.95
-$dptrain_setting{start_lr} = 0.002;
+$dptrain_setting{start_lr} = 0.001;
 my $t1 = log(3.0e-08/$dptrain_setting{start_lr});
 my $t2 = log(0.95)*$dptrain_setting{trainstep};
 my $dcstep = floor($t2/$t1);
@@ -117,9 +120,11 @@ $dptrain_setting{disp_freq} = 1000;
 $dptrain_setting{save_freq} = 1000;
 my $temp =$dptrain_setting{start_lr} * 0.95**( $dptrain_setting{trainstep}/$dptrain_setting{decay_steps} );
 $dptrain_setting{start_lr4compress} = $temp;
-$dptrain_setting{rcut} = $rcut;
-$dptrain_setting{rcut_smth} = $rcut_smth;
-$dptrain_setting{descriptor_type} = "$descriptor_type";
+if($use_hybrid eq "no"){
+    $dptrain_setting{rcut} = $rcut;
+    $dptrain_setting{rcut_smth} = $rcut_smth;
+    $dptrain_setting{descriptor_type} = "$descriptor_type";
+}
 #$dptrain_setting{descriptor_type} = "se_a";
 $dptrain_setting{save_ckpt} = "model.ckpt";
 $dptrain_setting{save_ckpt4compress} = "model_compress.ckpt";

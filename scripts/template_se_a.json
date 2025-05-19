@@ -1,44 +1,32 @@
 {
     "loss": {
-        "start_pref_f": 1000,
-        "start_pref_e": 0.001,
+        "start_pref_f": 100,
+        "start_pref_e": 0.1,
         "limit_pref_e": 1,
-        "limit_pref_v": 0.1,
-        "start_pref_v": 100,
-        "limit_pref_f": 1,
+        "limit_pref_v": 0.01,
+        "start_pref_v": 0.05,
+        "limit_pref_f": 5,
         "_comment": " that's all"
     },
     "model": {
         "type_map": [
             "N"
         ],
-        
-  "descriptor": {
-    "type": "hybrid",
-    "list": [
-      {
-        "type": "se_e2_a",
-        "sel": "auto",
-        "rcut_smth": 2.0,
-        "rcut": 6.0,
-        "neuron": [20, 40, 80],
-        "resnet_dt": false,
-        "axis_neuron": 16,
-        "seed": 1830526208,
-        "set_davg_zero": true
-      },
-      {
-        "type": "se_e3",
-        "sel": "auto",
-        "rcut_smth": 2.0,
-        "rcut": 4.0,
-        "neuron": [4, 8, 16],
-        "resnet_dt": false,
-        "seed": 1,
-        "set_davg_zero": true
-      }
-    ]
-    },
+        "descriptor": {
+            "axis_neuron": 12,
+            "rcut_smth": 1.5,
+            "sel": "auto",
+            "seed": 19213,
+            "rcut": 5.000000000001,
+            "_comment": " that's all",
+            "type": "se_a",
+            "resnet_dt": false,
+            "neuron": [
+                25,
+                50,
+                100
+            ]
+        },
         "_comment": " that's all",
         "fitting_net": {
             "neuron": [
