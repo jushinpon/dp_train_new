@@ -32,7 +32,8 @@ my %Prob = (
 );
 
 # Define the keywords that should be classified as "others" if you want to filter them out
-my @keywords = ("mp-1883","mp-19717");
+my @keywords = ("");#no mp case with the higher probability
+#my @keywords = ("mp-1883","mp-19717");
 my %keyword_hash = map { $_ => 1 } @keywords;  # Convert list to hash for fast lookup
 my $use_hybrid = $dps_hr->{use_hybrid};#use hybrid or not
 print "!!!!use hybrid: $use_hybrid\n";
@@ -63,7 +64,7 @@ for my $v (@allnpy_folder){
 die "No val folder for your system. Try to  use a smaller number for \$set_No in all_setting.pm" unless(@allnpy_Trafolder);
 map { s/^\s+|\s+$//g; } @allnpy_Valfolder;
 map { s/^\s+|\s+$//g; } @allnpy_Trafolder;
-my @prob;
+#my @prob;
 # Hashes to classify data
 my %categories = (
     'mp_pattern'    => [],

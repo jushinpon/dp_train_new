@@ -12,7 +12,7 @@ use warnings;
 use Cwd;
 use POSIX;
 ###!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! You need to set the following parameters for your case !!!!!!!!!
-my @DLP_elements = ("Al","P");#your DLP element sequence
+my @DLP_elements = ("Sn","Pb","Te");#your DLP element sequence
 my $force_upperbound = 200.0;# eV/A, the max force absolute value allowed in npy
 my $virial_upperbound = 500.0;# eV/A^3 * Vol = eV in Unit , the max virial absolute value allowed in npy
 
@@ -21,12 +21,12 @@ my $ener_lowerbound = -1e10;## smaller than which is not used (eV/atom)
 #Please set the following for $jobtype in order:
 #1. npy_only: get npy files and files in npy_conversion_info
 #2. dp_train: only do dp train with your npy files.
-#y $jobtype = "npy_only";
+#my $jobtype = "npy_only";
 my $jobtype = "dp_train";
 
 #for label and final training 
 my $trainNo = 1;#4 for label, and 1 with a larger training step (20000000) for the final
-my $trainstep = 2000000;# 2500000 for final training
+my $trainstep = 1000000;# 2500000 for final training
 my $compress_trainstep = $trainstep;#(useless!!!!!!)
 
 ###IMPORTANT, PLEASE READ THE FOLLOWING FOR THE FINAL TRAININ!##########
@@ -38,12 +38,12 @@ my $compress_trainstep = $trainstep;#(useless!!!!!!)
 #my $trainNo = 1;#4 for label, and 1 with a larger training step (20000000) for the final
 #my $trainstep = 2000000;
 #my $compress_trainstep = $trainstep*4;
-my $use_hybrid = "yes";#if "yes", you need to use the hybrid setting in json template file
+my $use_hybrid = "no";#if "yes", you need to use the hybrid setting in json template file
 
 #check deepMD papers for the following three of your material
 #if you use hybrid, the following three parameters are useless
-my $rcut = 9.00000000000001;
-my $rcut_smth = 2.5000000001;
+my $rcut = 6.00000000000001;
+my $rcut_smth = 2.0000000001;
 my $descriptor_type = "se_a";
 
 #########end of parameter settings
@@ -194,6 +194,12 @@ my $pm = Parallel::ForkManager->new("$forkNo");
         #`sed -i '/cp dp.dpout .*/d' $json_outdir/slurm_dp$temp.sh`;
 	            
         `sed -i '/#sed_anchor04/a dp compress -i graph$temp.pb -o graph-compress$temp.pb' $json_outdir/slurm_dp$temp.sh`;
+        `sed -i '/#sed_anchor05/a dp compress -i graph$temp.pb -o graph-compress$temp-p005.pb -s 0.005' $json_outdir/slurm_dp$temp.sh`;
+        `sed -i '/#sed_anchor06/a dp compress -i graph$temp.pb -o graph-compress$temp-p001.pb -s 0.001' $json_outdir/slurm_dp$temp.sh`;
+        `sed -i '/#sed_anchor07/a dp compress -i graph$temp.pb -o graph-compress$temp-p02.pb -s 0.02' $json_outdir/slurm_dp$temp.sh`;
+        `sed -i '/#sed_anchor08/a dp compress -i graph$temp.pb -o graph-compress$temp-p03.pb -s 0.03' $json_outdir/slurm_dp$temp.sh`;
+        `sed -i '/#sed_anchor09/a dp compress -i graph$temp.pb -o graph-compress$temp-p04.pb -s 0.04' $json_outdir/slurm_dp$temp.sh`;
+        `sed -i '/#sed_anchor10/a dp compress -i graph$temp.pb -o graph-compress$temp-p05.pb -s 0.05' $json_outdir/slurm_dp$temp.sh`;
         #`sed -i '/init-frz-model .*/d' $json_outdir/slurm_dp$temp.sh`;
 	    #`sed -i '/#sed_anchor05/a dp train $json_outdir/graph$temp-compress.json --init-frz-model graph-compress$temp.pb' $json_outdir/slurm_dp$temp.sh`;
   $pm-> finish;  

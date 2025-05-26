@@ -1,10 +1,10 @@
 {
     "loss": {
-        "start_pref_f": 100,
-        "start_pref_e": 0.1,
+        "start_pref_f": 1000,
+        "start_pref_e": 0.01,
         "limit_pref_e": 1,
         "limit_pref_v": 0.01,
-        "start_pref_v": 0.05,
+        "start_pref_v": 100.0,
         "limit_pref_f": 5,
         "_comment": " that's all"
     },

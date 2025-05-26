@@ -65,10 +65,15 @@ sleep 3
 echo " "
 echo "###Compress the graph"
 echo " "
-
+#default -s value is 0.01 for interpolation
 #sed_anchor04
 dp compress -i graph.pb -o graph-compress.pb
 #sed_anchor05
+#sed_anchor06
+#sed_anchor07
+#sed_anchor08
+#sed_anchor09
+#sed_anchor10
 #dp train input.json --init-frz-model graph-compress.pb
 #sleep 60
 echo "Done" > train_done.txt
