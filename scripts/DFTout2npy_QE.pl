@@ -170,12 +170,12 @@ for my $id (0..$#out){
 #the first energy corresponds to the structure in input file
 	my @totalenergy;
 	if($useFormationEnergy eq "yes"){
-		@totalenergy = grep {if(m/^\s*internal energy E=F+TS\s*=\s*([-+]?\d*\.?\d*)/){
+		@totalenergy = grep {if(m/^\s*internal energy E=F\+TS\s*=\s*([-+]?\d*\.?\d*)/){
 		#@totalenergy = grep {if(m/^\s*!\s*total energy\s*=\s*([-+]?\d*\.?\d*)/){
 		$_ = $1*$ry2eV - $dftBE_all + $expBE_be;}} @all;
 	}
 	else{
-		@totalenergy = grep {if(m/^\s*internal energy E=F+TS\s*=\s*([-+]?\d*\.?\d*)/){
+		@totalenergy = grep {if(m/^\s*internal energy E=F\+TS\s*=\s*([-+]?\d*\.?\d*)/){
 		#@totalenergy = grep {if(m/^\s*!\s*total energy\s*=\s*([-+]?\d*\.?\d*)/){
 		$_ = $1*$ry2eV;}} @all;
 	}
