@@ -15,6 +15,8 @@ use Data::Dumper;
 use Cwd;
 use POSIX;
 use List::Util ("shuffle","max");
+use lib './';#assign pm dir
+use iso_energy;#all setting package
 
 sub DFTout2npy_QE{
 
@@ -49,6 +51,28 @@ my $kbar2evperang3 = 1.0/ (160.21766208*10.0);
 my $force_convert = $ry2eV / $bohr2ang;
 #print "\$sout_dir: $sout_dir\n";
 my @out = <$sout_dir/*.sout>;# all DFT output files through slurm
+
+########
+#system("cat $sout_dir/elements.dat") if(-e "$sout_dir/elements.dat");
+# Open the file
+#open my $fh, '<', "$sout_dir/elements.dat" or die "Cannot open file: $sout_dir/elements.txt!";
+
+# Read the line, remove extra spaces, and split into an array
+my $line = `cat $sout_dir/elements.dat`;#`cat $sout_dir/elements.txt`;
+chomp $line;
+my @elements = split /\s+/, $line;  # Split by whitespace
+my $sum_iso_ener = 0;
+for my $i (@elements){
+	my $iso_ener = &iso_energy::eleObj($i);#get isolated energy
+	$sum_iso_ener += $iso_ener;
+	#print "$i: $iso_ener\n";
+	#$elements[$i] =~ s/^\s+|\s+$//g;#remove leading and trailing spaces
+	#$elements[$i] = lc($elements[$i]);#convert to lower case
+}
+#####
+
+
+
 die "No DFT sout file in $npy_hr->{dftsout_dir}\n" unless(@out);
 my @dftin = <$sout_dir/*.in>;# all DFT input files
 
@@ -169,16 +193,16 @@ for my $id (0..$#out){
 ##!    total energy              =    (-158.01049803) Ry
 #the first energy corresponds to the structure in input file
 	my @totalenergy;
-	if($useFormationEnergy eq "yes"){
+	#if($useFormationEnergy eq "yes"){
 		@totalenergy = grep {if(m/^\s*internal energy E=F\+TS\s*=\s*([-+]?\d*\.?\d*)/){
 		#@totalenergy = grep {if(m/^\s*!\s*total energy\s*=\s*([-+]?\d*\.?\d*)/){
-		$_ = $1*$ry2eV - $dftBE_all + $expBE_be;}} @all;
-	}
-	else{
-		@totalenergy = grep {if(m/^\s*internal energy E=F\+TS\s*=\s*([-+]?\d*\.?\d*)/){
-		#@totalenergy = grep {if(m/^\s*!\s*total energy\s*=\s*([-+]?\d*\.?\d*)/){
-		$_ = $1*$ry2eV;}} @all;
-	}
+		$_ = $1*$ry2eV - $sum_iso_ener;}} @all;
+	#}
+	#else{
+	#	@totalenergy = grep {if(m/^\s*internal energy E=F\+TS\s*=\s*([-+]?\d*\.?\d*)/){
+	#	#@totalenergy = grep {if(m/^\s*!\s*total energy\s*=\s*([-+]?\d*\.?\d*)/){
+	#	$_ = $1*$ry2eV;}} @all;
+	#}
 
 	#my	$lmpE = (($totE - $sumDFTatomE) + $sumLMPatomE) / $atomnumber; #use in MS perl
     unless (@totalenergy){
