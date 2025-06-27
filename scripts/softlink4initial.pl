@@ -19,10 +19,13 @@ if($include_labelled eq "yes"){
 my @all_inifolder;
 #!!! make the following if you have place everything in the initial folder
 @all_inifolder= qw(    
-    /home/jsp1/AlP/QE_from_MatCld/QEall_set/
-    /home/jsp1/AlP/QE4heat/softlink4training/
-    /home/jsp1/AlP/from195/
+   /home/jsp1/AlP/QE4dimer/data2QE/
+   /home/jsp1/AlP/from195/
 );
+
+ #/home/jsp1/AlP/QE_from_MatCld/QEall_set/
+    #/home/jsp1/AlP/QE4heat/softlink4training/
+    #/home/jsp1/AlP/from195/
 map { s/^\s+|\s+$//g; } @all_inifolder;
 
 ##make softlink for initial 

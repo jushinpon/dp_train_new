@@ -66,11 +66,17 @@ for my $in (@QE_in){
     $natom =~ /(\w+)\s*=\s*(.+)/;
     chomp ($1,$2);
     my $nat = $2;
-    if($2 <= 3){
-        print"\n***1. Atom number (currently, nat = $2) in $in is not allowed. The nat value should be => 4.\n";
-        print"###2. Please modify your current system to have at least 4 atoms and conduct the QE calculation again.\n\n";
+    unless($2){
+        print"\n***1. Atom number zero or empty in $in is not allowed.\n";
+        print"###2. Please check your QE output file to have at least 2 atoms.\n\n";
         die;    
     }
+    
+    #if($2 <= 3){
+    #    print"\n***1. Atom number (currently, nat = $2) in $in is not allowed. The nat value should be => 4.\n";
+    #    print"###2. Please modify your current system to have at least 4 atoms and conduct the QE calculation again.\n\n";
+    #    die;    
+    #}
     #the element id for dpgen and can be used for assigning type id for data files 
     my @typemap = @{$dptrain_setting{type_map}};
     map { s/^\s+|\s+$//g; } @typemap;

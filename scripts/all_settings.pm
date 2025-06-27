@@ -13,10 +13,15 @@ use Cwd;
 use POSIX;
 ###!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! You need to set the following parameters for your case !!!!!!!!!
 my @DLP_elements = ("Al","P");#your DLP element sequence
+my @atom_ener;
+for my $element (0 .. $#DLP_elements){
+    push @atom_ener, sprintf("%.2f",0.0);#eV/atom, the energy of each element in DLP elements
+}
+#my $atom_ener = join(",",@atom_ener);
 my $force_upperbound = 200.0;# eV/A, the max force absolute value allowed in npy
 my $virial_upperbound = 500.0;# eV/A^3 * Vol = eV in Unit , the max virial absolute value allowed in npy
 
-my $ener_upperbound = 0;# larger than which is not used (eV/atom)
+my $ener_upperbound = 200.0;# larger than which is not used (eV/atom)
 my $ener_lowerbound = -1e10;## smaller than which is not used (eV/atom)
 #Please set the following for $jobtype in order:
 #1. npy_only: get npy files and files in npy_conversion_info
@@ -24,9 +29,11 @@ my $ener_lowerbound = -1e10;## smaller than which is not used (eV/atom)
 #my $jobtype = "npy_only";
 my $jobtype = "dp_train";
 
+my $use_hybrid = "no";#if "yes", you need to use the hybrid setting in json template file
+
 #for label and final training 
 my $trainNo = 1;#4 for label, and 1 with a larger training step (20000000) for the final
-my $trainstep = 2000000;# 2500000 for final training
+my $trainstep = 20000;# 2500000 for final training
 my $compress_trainstep = $trainstep;#(useless!!!!!!)
 
 ###IMPORTANT, PLEASE READ THE FOLLOWING FOR THE FINAL TRAININ!##########
@@ -38,14 +45,13 @@ my $compress_trainstep = $trainstep;#(useless!!!!!!)
 #my $trainNo = 1;#4 for label, and 1 with a larger training step (20000000) for the final
 #my $trainstep = 2000000;
 #my $compress_trainstep = $trainstep*4;
-my $use_hybrid = "no";#if "yes", you need to use the hybrid setting in json template file
 
 #check deepMD papers for the following three of your material
 #if you use hybrid, the following three parameters are useless
-my $rcut = 6.00000000000001;
-my $rcut_smth = 2.0000000001;
+my $rcut = 8.00000000000001;#also used for se_e2_a_rcut
+my $rcut_smth = 3.0000000001;#also used for se_e2_a_rcut_smth
 my $descriptor_type = "se_a";
-
+my $set_davg_zero = "True";#default is false
 #########end of parameter settings
 
 my @all_ini = `find -L ../initial -type f -name "*.sout"`;
@@ -70,7 +76,7 @@ chdir("$currentPath");
 my @allIniStr = @folders;
 
 my %system_setting;
-$system_setting{allIniStr} = \@folders;#"new";#check readme
+$system_setting{allIniStr} = \@folders;#"new";#check readme``
 $system_setting{useFormationEnergy} = "no";#if "yes", you need to prepare dpE2expE.dat in each folder under ./initial
 $system_setting{force_upperbound} = $force_upperbound;#force upper bound setting
 $system_setting{virial_upperbound} = $virial_upperbound;#virial upper bound setting
@@ -102,6 +108,7 @@ $system_setting{ratio4val} = 0.05;#ratio of total data number to be valiation da
 my %dptrain_setting; 
 $dptrain_setting{use_hybrid} = $use_hybrid;# json template file
 $dptrain_setting{type_map} = [@DLP_elements];# json template file
+$dptrain_setting{atom_ener} = [@atom_ener];# json template file
 $dptrain_setting{json_script} = "$currentPath/template.json";# json template file
 $dptrain_setting{json_outdir} = "$mainPath/dp_train";
 $dptrain_setting{working_dir} = "$mainPath/dp_train";
@@ -120,10 +127,20 @@ $dptrain_setting{disp_freq} = 1000;
 $dptrain_setting{save_freq} = 1000;
 my $temp =$dptrain_setting{start_lr} * 0.95**( $dptrain_setting{trainstep}/$dptrain_setting{decay_steps} );
 $dptrain_setting{start_lr4compress} = $temp;
+$dptrain_setting{set_davg_zero} = $set_davg_zero;#default is false
 if($use_hybrid eq "no"){
     $dptrain_setting{rcut} = $rcut;
     $dptrain_setting{rcut_smth} = $rcut_smth;
     $dptrain_setting{descriptor_type} = "$descriptor_type";
+}
+else
+{
+    #se_e2 for distance interaction
+    $dptrain_setting{se_e2_a_rcut} = $rcut;
+    $dptrain_setting{se_e2_a_rcut_smth} = $rcut_smth;
+    #se_e3 for angle interaction
+    $dptrain_setting{se_e3_a_rcut} = 4.00000001;
+    $dptrain_setting{se_e3_a_rcut_smth} = 2.00000001;   
 }
 #$dptrain_setting{descriptor_type} = "se_a";
 $dptrain_setting{save_ckpt} = "model.ckpt";

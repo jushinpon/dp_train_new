@@ -17,6 +17,7 @@ my $currentPath = $ss_hr->{script_dir};
 my $debug = $ss_hr->{debug};
 my @allnpy_folder = @{$dps_hr->{allnpy_dir}};
 my @type_map = @{$dps_hr->{type_map}};
+my @atom_ener = @{$dps_hr->{atom_ener}};
 my $working_dir = $dps_hr->{working_dir};#training folder
 my $json_script = $dps_hr->{json_script};#json template
 my $json_outdir = $dps_hr->{json_outdir};#modified json output dir
@@ -28,7 +29,8 @@ my %Prob = (
     'surface'   => 0.1,
     #'label'         =  [],
     'others'        => 0.6, #mainly for homemade
-    'heating'        => 0.2 
+    'heating'        => 0.2, 
+    'dimer'        => 0.05, 
 );
 
 # Define the keywords that should be classified as "others" if you want to filter them out
@@ -71,7 +73,8 @@ my %categories = (
     'surface'   => [],
     #'label'         => [],
     'others'        => [], #mainly for homemade
-    'heating'        => [] 
+    'heating'        => [], 
+    'dimer'        => [] 
 );
 
 for my $path (@allnpy_Trafolder){
@@ -88,7 +91,7 @@ for my $path (@allnpy_Trafolder){
         }
     }
 
-    if ($path =~ /^(?!.*-P0).*/) {
+    if ($path =~ /^(?!.*-P0)(?!.*dimer).*/) {
         push @{ $categories{'heating'} }, $path;
     }
     elsif ($path =~ /_mp-\d+-T\d+-P0/) {
@@ -100,6 +103,9 @@ for my $path (@allnpy_Trafolder){
     #elsif ($path =~ /label/i) {
     #    push @{ $categories{'label'} }, $path;
     #}
+    elsif ($path =~ /dimer/) {
+        push @{ $categories{'dimer'} }, $path;
+    }
     else {
         push @{ $categories{'others'} }, $path;
     }    
@@ -167,7 +173,6 @@ foreach my $category (  sort keys %categories) {
     };
 }
 
-
 ##modify set folders' parent path
 $decoded->{training}->{training_data}->{systems} = [@allnpy_Trafolder];#clean it first
 #find folders with /val
@@ -189,6 +194,9 @@ for (1..$trainNo){
     my $seed2 = ceil(12345 * (rand() + $_ * rand()));
 	chomp $seed2;
     $decoded->{model}->{fitting_net}->{seed} = $seed2;
+    $decoded->{model}->{fitting_net}->{atom_ener} = [map { sprintf("%.1f", $_) + 0 } @atom_ener];#eV/atom, the energy of each element in DLP elements
+    #$decoded->{model}->{fitting_net}->{atom_ener} = [@atom_ener];#eV/atom, the energy of each element in DLP elements
+
     my $seed3 = ceil(12345 * (rand() + $_ * rand()));
     chomp $seed3;
     $decoded->{training}->{seed} = $seed3;
@@ -199,11 +207,13 @@ for (1..$trainNo){
     $decoded->{training}->{disp_freq} = $dps_hr->{disp_freq};    
     $decoded->{learning_rate}->{start_lr} = $dps_hr->{start_lr};    
     $decoded->{learning_rate}->{decay_steps} = $dps_hr->{decay_steps};
+    $decoded->{learning_rate}->{decay_rate} = 0.95;
     
     if($use_hybrid eq "no"){
         $decoded->{model}->{descriptor}->{seed} = $seed1;
         $decoded->{model}->{descriptor}->{rcut} = $dps_hr->{rcut};    
         $decoded->{model}->{descriptor}->{rcut_smth} = $dps_hr->{rcut_smth};    
+        #$decoded->{model}->{descriptor}->{set_davg_zero} = $dps_hr->{set_davg_zero};    
         $decoded->{model}->{descriptor}->{type} = $dps_hr->{descriptor_type};
     }
     else{
@@ -211,6 +221,13 @@ for (1..$trainNo){
         my $seed4 = ceil(12345 * (rand() + $_ * rand()) );
         chomp $seed4;
         $decoded->{model}->{descriptor}->{list}->[1]->{seed} = $seed4;
+        #set the rcut and smth for se_e2 descriptor
+        $decoded->{model}->{descriptor}->{list}->[0]->{rcut} = $dps_hr->{se_e2_a_rcut};
+        $decoded->{model}->{descriptor}->{list}->[0]->{rcut_smth} = $dps_hr->{se_e2_a_rcut_smth};
+        #set the rcut and smth for se_e3_a descriptor
+        $decoded->{model}->{descriptor}->{list}->[1]->{rcut} = $dps_hr->{se_e3_a_rcut};
+        $decoded->{model}->{descriptor}->{list}->[1]->{rcut_smth} = $dps_hr->{se_e3_a_rcut_smth};
+
     }
 
 
@@ -237,6 +254,9 @@ for (1..$trainNo){
     my $seed2 = ceil(12345 * (rand() + $_ * rand()));
 	chomp $seed2;
     $decoded->{model}->{fitting_net}->{seed} = $seed2;
+    $decoded->{model}->{fitting_net}->{atom_ener} = [map { sprintf("%.1f", $_) + 0 } @atom_ener];#eV/atom, the energy of each element in DLP elements
+
+    #$decoded->{model}->{fitting_net}->{atom_ener} = [@atom_ener];#eV/atom, the energy of each element in DLP elements
     my $seed3 = ceil(12345 * (rand() + $_ * rand()));
     chomp $seed3;
     $decoded->{training}->{seed} = $seed3;
