@@ -12,7 +12,7 @@ use warnings;
 use Cwd;
 use POSIX;
 ###!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! You need to set the following parameters for your case !!!!!!!!!
-my @DLP_elements = ("Sn","Pb","Te");#your DLP element sequence
+my @DLP_elements = ("Al","P");#your DLP element sequence
 my @atom_ener;
 for my $element (0 .. $#DLP_elements){
     push @atom_ener, sprintf("%.2f",0.0);#eV/atom, the energy of each element in DLP elements

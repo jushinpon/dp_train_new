@@ -30,7 +30,7 @@
             "attn_layer": 0,
             "attn_dotr": true,
             "attn_mask": false,
-            "precision": "float64",
+            "precision": "float32",
             "_comment2": " that's all"
         },
         "_comment": " that's all",
@@ -40,6 +40,10 @@
                 240,
                 240
             ],
+         "atom_ener" : [
+            0,
+            0
+         ],
             "resnet_dt": true,
             "seed": 18328,
             "_comment": " that's all"
