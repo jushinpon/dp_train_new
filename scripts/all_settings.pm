@@ -12,7 +12,7 @@ use warnings;
 use Cwd;
 use POSIX;
 ###!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! You need to set the following parameters for your case !!!!!!!!!
-my @DLP_elements = ("Al","P");#your DLP element sequence
+my @DLP_elements = ("Sn","Pb","Te");#your DLP element sequence
 my @atom_ener;
 for my $element (0 .. $#DLP_elements){
     push @atom_ener, sprintf("%.2f",0.0);#eV/atom, the energy of each element in DLP elements
@@ -50,7 +50,8 @@ my $compress_trainstep = $trainstep;#(useless!!!!!!)
 #if you use hybrid, the following three parameters are useless
 my $rcut = 8.00000000000001;#also used for se_e2_a_rcut
 my $rcut_smth = 3.0000000001;#also used for se_e2_a_rcut_smth
-my $descriptor_type = "se_a";
+#mix, se_a, se_atten_v2
+my $descriptor_type = "se_atten_v2";#you need to use correct json template file for this descriptor type
 my $set_davg_zero = "True";#default is false
 #########end of parameter settings
 
