@@ -12,7 +12,7 @@ use warnings;
 use Cwd;
 use POSIX;
 ###!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! You need to set the following parameters for your case !!!!!!!!!
-my @DLP_elements = ("Al","P");#your DLP element sequence
+my @DLP_elements = ("Sn","Pb","Te");#your DLP element sequence
 my @atom_ener;
 for my $element (0 .. $#DLP_elements){
     push @atom_ener, sprintf("%.2f",0.0);#eV/atom, the energy of each element in DLP elements
@@ -32,8 +32,8 @@ my $jobtype = "dp_train";
 my $use_hybrid = "no";#if "yes", you need to use the hybrid setting in json template file
 
 #for label and final training 
-my $trainNo = 1;#4 for label, and 1 with a larger training step (20000000) for the final
-my $trainstep = 20000;# 2500000 for final training
+my $trainNo = 3;#4 for label, and 1 with a larger training step (20000000) for the final
+my $trainstep = 2000000;# 2500000 for final training
 my $compress_trainstep = $trainstep;#(useless!!!!!!)
 
 ###IMPORTANT, PLEASE READ THE FOLLOWING FOR THE FINAL TRAININ!##########

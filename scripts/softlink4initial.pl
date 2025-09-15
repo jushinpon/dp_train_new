@@ -19,8 +19,11 @@ if($include_labelled eq "yes"){
 my @all_inifolder;
 #!!! make the following if you have place everything in the initial folder
 @all_inifolder= qw(    
-   /home/jsp1/AlP/QE4dimer/data2QE/
-   /home/jsp1/AlP/from195/
+   /home/jsp/SnPbTe_alloys/QE_from_MatCld/QEall_set/
+   /home/jsp/SnPbTe_alloys/make_surface_20240919/QEall_set/
+   /home/jsp/SnPbTe_alloys/make_B2_related_data/QEall_set/
+   /home/jsp/SnPbTe_alloys/scale4QE/data2QE/
+   /home/jsp/SnPbTe_alloys/QE4dimer/data2QE/
 );
 
  #/home/jsp1/AlP/QE_from_MatCld/QEall_set/

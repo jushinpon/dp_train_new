@@ -22,6 +22,7 @@ my $working_dir = $dptrain_setting{working_dir};#training folder
 my $npydir4matplot = "$mainPath/matplot4compress";
 my $npy_dirs = "$mainPath/all_npy*";#you may use your dir, under which all npy files are included.
 
+=begin comment
 `rm -rf $mainPath/matplot4compress`;
 `mkdir $mainPath/matplot4compress`;
 #keep data files
@@ -118,7 +119,8 @@ for (0..$#allnpy4valid){#copy validation npy files
     `mkdir -p $validation_dir/$_`;
     `cp -r $allnpy4valid[$_] $validation_dir/$_`;
 }
-my @pb_files = `find $mainPath/dp_train -type f -name "*.pb"|grep compress`;#all npy files
+=cut
+my @pb_files = `find $mainPath/dp_train -type f -name "*.pb"|grep compress|grep -v -- "-p"`;#all npy files
 my @pb_folders = `find $mainPath/dp_train -type d -name "graph*"`;#all graphxx folders
 map { s/^\s+|\s+$//g; } @pb_files;
 map { s/^\s+|\s+$//g; } @pb_folders;
