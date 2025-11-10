@@ -25,12 +25,12 @@ my $json_outdir = $dps_hr->{json_outdir};#modified json output dir
 #the follwoing is the base weight for probability of each type of data
 my $ajustProb = "yes";
 my %Prob = (
-    'mp_pattern'    => 0.1,
+    'mp_pattern'    => 0.01,
     'surface'   => 0.1,
     #'label'         =  [],
     'others'        => 0.6, #mainly for homemade
-    'heating'        => 0.2, 
-    'dimer'        => 0.05, 
+    'heating'        => 0.1, 
+    'dimer'        => 0.0001, #for common knowledge, dimer data is not very useful for bulk or surface properties
 );
 
 # Define the keywords that should be classified as "others" if you want to filter them out

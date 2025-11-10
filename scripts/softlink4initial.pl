@@ -6,6 +6,16 @@ use strict;
 open(BAD, "> ./bad_files_checkbysoftlink.dat") or die $!;
 print BAD "#The following files are bad and filtered by softlink4initial.pl\n"; 
 #####make link for labelled folders
+
+#for setting scaleID range, you need to check your scale script settings.
+#original setting are too wide, you may narrow them down to a real tensile and compessive strain range.
+#vol from 0.95 to 1.05
+#for length range 0.95**(1./3.) and 1.05**(1./3.).
+# for orignal deform script settings, -0.25 to 0.25 is too wide. (21 scaled structures)
+#if you only use scaleID from $scaleID_lowerBound to $scaleID_upperBound 
+my $scaleID_lowerBound = 7;
+my $scaleID_upperBound = 13;
+
 my $include_labelled = "no";#if yes, you need to provide parent paths of your labelled folders (@all_labelled) 
 my @all_labelled;
 if($include_labelled eq "yes"){
@@ -17,29 +27,80 @@ if($include_labelled eq "yes"){
 
 #for initial folder
 my @all_inifolder;
-#!!! make the following if you have place everything in the initial folder
+#!!! make the following if you have place everything in the initial folder (don't put dimer results here)
 @all_inifolder= qw(    
-   /home/jsp/SnPbTe_alloys/QE_from_MatCld/QEall_set/
-   /home/jsp/SnPbTe_alloys/make_surface_20240919/QEall_set/
-   /home/jsp/SnPbTe_alloys/make_B2_related_data/QEall_set/
+  /home/jsp/SnPbTe_alloys/QE_from_MatCld/QEall_set/
+  /home/jsp/SnPbTe_alloys/make_surface_20240919/QEall_set/
+  /home/jsp/SnPbTe_alloys/make_B2_related_data/QEall_set/
    /home/jsp/SnPbTe_alloys/scale4QE/data2QE/
-   /home/jsp/SnPbTe_alloys/QE4dimer/data2QE/
 );
+
+map { s/^\s+|\s+$//g; } @all_inifolder;
+#put your dimer folders here if you have
+my @all_dimerfolder;
+@all_dimerfolder= qw(    
+    /home/jsp/SnPbTe_alloys/QE4dimer/data2QE/
+);
+map { s/^\s+|\s+$//g; } @all_dimerfolder;
+
+my @dimer_pairs;
+print BAD "\n#Part1: files in original initial folder (md or vc-md is allowed!)\n"; 
+
+for my $i (@all_dimerfolder){
+    my @temp_folders = `find $i -mindepth 1 -maxdepth 1 -type d `;
+    map { s/^\s+|\s+$//g; } @temp_folders;
+    for my $j (@temp_folders){
+        #filter out some bad dimer results (atractive one)!
+        my @temp = split(/\//,$j);
+        $temp[-1] =~ m/(.*)_(dimer\d\d)/;
+        #print "dimer pair: $1 and $2\n";
+
+        my $file = "$j/$temp[-1].sout";
+
+        my $jobdone = `grep "JOB DONE" $j/$temp[-1].sout`;
+        $jobdone =~ s/^\s+|\s+$//g;
+
+        unless($jobdone){
+            print BAD "No \"JOB DONE\" for dimer cases: $j/$temp[-1].sout\n";
+            next;
+        }
+        open my $fh, "-|", "grep", "-A", "3", "Forces acting on atoms (cartesian axes, Ry/au):", $file
+            or die "Cannot open grep: $!";
+        my @forcetemp = grep { !/Forces acting on atoms/ && !/--/ && !/^\s*$/ } <$fh>;
+        close $fh;
+#      #my @forcetemp = `grep -A 2 \"Forces acting on atoms (cartesian axes, Ry/au):\ $i/$temp[-1].sout|grep -v \"Forces acting on atoms\"|grep -v \"--\"`;
+        map { s/^\s+|\s+$//g; } @forcetemp;
+        my $join_forces = join("\n", @forcetemp);
+       # print "dimer forces:\n$join_forces\n";
+        my @forces_values = split(/\s+/, $forcetemp[0]);
+        #print "dimer forces values: $forces_values[6]\n";
+        if($forces_values[6] > 0.0){
+            print BAD "dimer_atractive folder skipped: $j/$temp[-1].sout\n";
+            next;
+        }
+
+       push @dimer_pairs, $j;
+    }
+}
+
+
 
  #/home/jsp1/AlP/QE_from_MatCld/QEall_set/
     #/home/jsp1/AlP/QE4heat/softlink4training/
     #/home/jsp1/AlP/from195/
-map { s/^\s+|\s+$//g; } @all_inifolder;
 
 ##make softlink for initial 
-print BAD "\n#Part1: files in original initial folder (md or vc-md is allowed!)\n"; 
 
+#filter out some bad ini folders
 my @all_ini;
 for (@all_inifolder){
     my @temp = `find $_ -mindepth 1 -maxdepth 1 -type d `;
     map { s/^\s+|\s+$//g; } @temp;
     @all_ini = (@all_ini,@temp);
 }
+
+
+@all_ini = (@all_ini,@dimer_pairs);
 
 #my @all_ini = `find ../initial -type f -name "*.sout"`;
 map { s/^\s+|\s+$//g; } @all_ini;
@@ -49,7 +110,7 @@ for my $i (@all_ini){
     my $relax = `grep -e relax -e vc-relax $i/$temp[-1].in`;
        $relax =~ s/^\s+|\s+$//g;
     
-    my $scf = `grep scf $i/$temp[-1].in`;
+    my $scf = `grep calculation $i/$temp[-1].in | grep scf`;
        $scf =~ s/^\s+|\s+$//g;
 
     my $nonCon = `grep "convergence NOT achieved" $i/$temp[-1].sout`;
@@ -57,10 +118,21 @@ for my $i (@all_ini){
 
     my $jobdone = `grep "JOB DONE" $i/$temp[-1].sout`;
        $jobdone =~ s/^\s+|\s+$//g;
+    #filter scaleID
+    if($temp[-1] =~ m|scale_\dd_(.*)|){
+        my $scaleID = $1;
+        print "scaleID:$scaleID\n";
+        if( ($scaleID < $scaleID_lowerBound) or ($scaleID > $scaleID_upperBound) ){
+            print BAD "**scaleID $scaleID out of range: $i/$temp[-1].sout\n";
+            next;
+        }
+    }
+
        #if($nonCon){
        #     print "ini convergence NOT achieved: $i/$temp[-1].sout\n";
        #    
        # }
+    
     if($scf){
         my @stresses = `grep "total   stress"  $i/$temp[-1].sout`;
         map { s/^\s+|\s+$//g; } @stresses;

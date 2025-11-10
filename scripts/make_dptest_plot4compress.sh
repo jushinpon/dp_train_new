@@ -7,7 +7,7 @@
 #SBATCH --partition=All
 ##SBATCH --ntasks-per-node=12
 ##SBATCH --reservation=GPU_test
-##SBATCH --reservation=script_test
+#SBATCH --reservation=script_test
 ##SBATCH --exclude=node18,node20
 ##SBATCH --gres=gpu:0 
 #source activate deepmd-cpu
