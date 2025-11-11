@@ -3,6 +3,7 @@ use strict;
 
 `rm -rf ../initial`;#if you have old files in initial, you may mark this line.
 `mkdir ../initial`;
+
 open(BAD, "> ./bad_files_checkbysoftlink.dat") or die $!;
 print BAD "#The following files are bad and filtered by softlink4initial.pl\n"; 
 #####make link for labelled folders
@@ -29,17 +30,17 @@ if($include_labelled eq "yes"){
 my @all_inifolder;
 #!!! make the following if you have place everything in the initial folder (don't put dimer results here)
 @all_inifolder= qw(    
-  /home/jsp/SnPbTe_alloys/QE_from_MatCld/QEall_set/
-  /home/jsp/SnPbTe_alloys/make_surface_20240919/QEall_set/
-  /home/jsp/SnPbTe_alloys/make_B2_related_data/QEall_set/
-   /home/jsp/SnPbTe_alloys/scale4QE/data2QE/
+   /home/jsp1/AlP/from195/
+   /home/jsp1/AlP/QE_from_MatCld/QEall_set/
+   /home/jsp1/AlP/QE4heat/softlink4training/
+   /home/jsp1/AlP/new_AlP/QE_from_MatCld/QEall_set/  
 );
 
 map { s/^\s+|\s+$//g; } @all_inifolder;
 #put your dimer folders here if you have
 my @all_dimerfolder;
 @all_dimerfolder= qw(    
-    /home/jsp/SnPbTe_alloys/QE4dimer/data2QE/
+    /home/jsp1/AlP/QE4dimer/data2QE/
 );
 map { s/^\s+|\s+$//g; } @all_dimerfolder;
 
