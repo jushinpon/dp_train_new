@@ -46,6 +46,8 @@ $iso_energy{"V"} = -1965.42757655124;
 $iso_energy{"W"} = -2153.61034934247;
 $iso_energy{"Zn"} = -6278.63627174674;
 $iso_energy{"Zr"} = -1341.68291452224;
+$iso_energy{"Sc"} = -1245.26541389801;
+$iso_energy{"Y"} = -1185.8882709621;
 
 sub eleObj {# return properties of an element
     my $elem = shift @_;
