@@ -27,10 +27,10 @@ my $ajustProb = "yes";
 my %Prob = (
     'mp_pattern'    => 0.01,
     'surface'   => 0.1,
-    #'label'         =  [],
-    'others'        => 0.6, #mainly for homemade
+    'label'         =>  0.1,
+    'others'        => 0.5, #mainly for homemade
     'heating'        => 0.1, 
-    'dimer'        => 0.0001, #for common knowledge, dimer data is not very useful for bulk or surface properties
+    'dimer'        => 0.001, #for common knowledge, dimer data is not very useful for bulk or surface properties
 );
 
 # Define the keywords that should be classified as "others" if you want to filter them out
@@ -71,7 +71,7 @@ map { s/^\s+|\s+$//g; } @allnpy_Trafolder;
 my %categories = (
     'mp_pattern'    => [],
     'surface'   => [],
-    #'label'         => [],
+    'label'         => [],
     'others'        => [], #mainly for homemade
     'heating'        => [], 
     'dimer'        => [] 
@@ -91,7 +91,7 @@ for my $path (@allnpy_Trafolder){
         }
     }
 
-    if ($path =~ /^(?!.*-P0)(?!.*dimer).*/) {
+    if ($path =~ /^(?!.*-P0)(?!.*dimer)(?!.*label_).*/) {
         push @{ $categories{'heating'} }, $path;
     }
     elsif ($path =~ /_mp-\d+-T\d+-P0/) {
@@ -100,9 +100,9 @@ for my $path (@allnpy_Trafolder){
     elsif ($path =~ /_\d{3}-T/) {
         push @{ $categories{'surface'} }, $path;
     }
-    #elsif ($path =~ /label/i) {
-    #    push @{ $categories{'label'} }, $path;
-    #}
+    elsif ($path =~ /label/i) {
+        push @{ $categories{'label'} }, $path;
+    }
     elsif ($path =~ /dimer/) {
         push @{ $categories{'dimer'} }, $path;
     }
