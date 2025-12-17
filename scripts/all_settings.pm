@@ -12,7 +12,7 @@ use warnings;
 use Cwd;
 use POSIX;
 ###!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! You need to set the following parameters for your case !!!!!!!!!
-my @DLP_elements = ("Sn","Pb","Te");#your DLP element sequence
+my @DLP_elements = ("Al","P");#your DLP element sequence
 my @atom_ener;
 for my $element (0 .. $#DLP_elements){
     push @atom_ener, sprintf("%.2f",0.0);#eV/atom, the energy of each element in DLP elements
@@ -32,8 +32,8 @@ my $jobtype = "dp_train";
 my $use_hybrid = "no";#if "yes", you need to use the hybrid setting in json template file
 
 #for label and final training 
-my $trainNo = 3;#4 for label, and 1 with a larger training step (20000000) for the final
-my $trainstep = 2000000;# 2500000 for final training
+my $trainNo = 1;#4 for label, and 1 with a larger training step (20000000) for the final
+my $trainstep = 3000000;# 2500000 for final training
 my $compress_trainstep = $trainstep;#(useless!!!!!!)
 
 ###IMPORTANT, PLEASE READ THE FOLLOWING FOR THE FINAL TRAININ!##########
@@ -48,10 +48,10 @@ my $compress_trainstep = $trainstep;#(useless!!!!!!)
 
 #check deepMD papers for the following three of your material
 #if you use hybrid, the following three parameters are useless
-my $rcut = 8.00000000000001;#also used for se_e2_a_rcut
-my $rcut_smth = 3.0000000001;#also used for se_e2_a_rcut_smth
+my $rcut = 6.00000000000001;#also used for se_e2_a_rcut
+my $rcut_smth = 5.8000000001;#also used for se_e2_a_rcut_smth
 #mix, se_a, se_atten_v2
-my $descriptor_type = "se_atten_v2";#you need to use correct json template file for this descriptor type
+my $descriptor_type = "se_a";#you need to use correct json template file for this descriptor type
 my $set_davg_zero = "True";#default is false
 #########end of parameter settings
 

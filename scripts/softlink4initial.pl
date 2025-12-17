@@ -14,14 +14,18 @@ print BAD "#The following files are bad and filtered by softlink4initial.pl\n";
 #for length range 0.95**(1./3.) and 1.05**(1./3.).
 # for orignal deform script settings, -0.25 to 0.25 is too wide. (21 scaled structures)
 #if you only use scaleID from $scaleID_lowerBound to $scaleID_upperBound 
-my $scaleID_lowerBound = 7;
-my $scaleID_upperBound = 13;
+my $scaleID_lowerBound = -1;
+my $scaleID_upperBound = 30;
 
-my $include_labelled = "no";#if yes, you need to provide parent paths of your labelled folders (@all_labelled) 
+my $include_labelled = "yes";#if yes, you need to provide parent paths of your labelled folders (@all_labelled) 
 my @all_labelled;
 if($include_labelled eq "yes"){
     @all_labelled = qw(
         /home/jsp1/AlP/dp_train_label/thermo_label
+        /home/jsp1/AlP/dp_train_label/shear_label
+        /home/jsp1/AlP/dp_train_label/thermo_label_threeNTs
+        /home/jsp1/AlP/dp_train_label/scale_label
+
     );
     map { s/^\s+|\s+$//g; } @all_labelled;
 }

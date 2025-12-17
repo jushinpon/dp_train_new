@@ -6,12 +6,12 @@
 ##SBATCH --cpus-per-task=1
 ##SBATCH --ntasks-per-node=8
 #SBATCH --partition=All
-##SBATCH --nodelist=master
+#SBATCH --nodelist=master
 ##SBATCH --ntasks-per-node=12
-#SBATCH --reservation=GPU_test
+##SBATCH --reservation=GPU_test
 ##SBATCH --exclude=node18,node20
 ##SBATCH --gres=gpu:0
-#SBATCH --reservation=script_test
+##SBATCH --reservation=script_test
 ##SBATCH --reservation=script_test
 hostname
 
