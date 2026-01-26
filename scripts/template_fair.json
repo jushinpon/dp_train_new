@@ -1,0 +1,143 @@
+{
+   "training" : {
+      "numb_test" : 4,
+      "validation_data" : {
+         "numb_btch" : 1,
+         "batch_size" : "auto",
+         "set_prefix" : "set",
+         "_comment" : "that's all",
+         "systems" : [
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/Al3P_mp-1183180-T0800/val",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/AlP2_mp-1182873-T0800/val",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/AlP_mp-1550-T0800/val",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/AlP_mp-8880-T0800/val",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/AlP_mp-997569-T0800/val"
+         ]
+      },
+      "save_ckpt" : "model.ckpt",
+      "disp_training" : true,
+      "seed" : 15457,
+      "save_freq" : 1000,
+      "disp_file" : "lcurve.out",
+      "profiling" : false,
+      "_comment" : "that's all",
+      "time_training" : true,
+      "disp_freq" : 1000,
+      "training_data" : {
+         "systems" : [
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/Al3P_mp-1183180-T0800",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/AlP2_mp-1182873-T0800",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/AlP_mp-1550-T0800",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/AlP_mp-8880-T0800",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/AlP_mp-997569-T0800",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/Al_Al_dimer0",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/Al_Al_dimer1",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/Al_Al_dimer10",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/Al_Al_dimer11",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/Al_Al_dimer12",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/Al_Al_dimer13",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/Al_Al_dimer14",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/Al_Al_dimer15",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/Al_Al_dimer2",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/Al_Al_dimer3",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/Al_Al_dimer4",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/Al_Al_dimer5",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/Al_Al_dimer6",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/Al_Al_dimer7",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/Al_Al_dimer8",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/Al_Al_dimer9",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/Al_P_dimer0",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/Al_P_dimer1",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/Al_P_dimer10",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/Al_P_dimer11",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/Al_P_dimer12",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/Al_P_dimer13",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/Al_P_dimer14",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/Al_P_dimer15",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/Al_P_dimer2",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/Al_P_dimer3",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/Al_P_dimer4",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/Al_P_dimer5",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/Al_P_dimer6",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/Al_P_dimer7",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/Al_P_dimer8",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/Al_P_dimer9",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/P_P_dimer0",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/P_P_dimer1",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/P_P_dimer10",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/P_P_dimer11",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/P_P_dimer12",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/P_P_dimer13",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/P_P_dimer14",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/P_P_dimer15",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/P_P_dimer2",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/P_P_dimer3",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/P_P_dimer4",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/P_P_dimer5",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/P_P_dimer6",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/P_P_dimer7",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/P_P_dimer8",
+            "/home/jsp1/AlP/dp_train_new/all_npy/initial/P_P_dimer9"
+         ],
+         "set_prefix" : "set",
+         "auto_prob" : "prob_sys_size;0:53:1",
+         "batch_size" : "auto"
+      },
+      "profiling_file" : "timeline.json",
+      "numb_steps" : 20000
+   },
+   "model" : {
+      "fitting_net" : {
+         "seed" : 20168,
+         "_comment" : " that's all",
+         "neuron" : [
+            240,
+            240,
+            240
+         ],
+         "atom_ener" : [
+            0,
+            0
+         ],
+         "resnet_dt" : true
+      },
+      "_comment" : " that's all",
+      "type_map" : [
+         "Al",
+         "P"
+      ],
+      "descriptor" : {
+         "type" : "se_a",
+         "seed" : 19353,
+         "sel" : "auto",
+         "_comment" : " that's all",
+         "axis_neuron" : 12,
+         "rcut" : 6.00000000000001,
+         "set_davg_zero" : true,
+         "rcut_smth" : 2.0000000001,
+         "resnet_dt" : false,
+         "neuron" : [
+            25,
+            50,
+            100
+         ]
+      }
+   },
+   "loss" : {
+      "limit_pref_e" : 1,
+      "start_pref_f" : 1000,
+      "start_pref_v" : 10,
+      "_comment" : " that's all",
+      "limit_pref_f" : 5,
+      "start_pref_e" : 0.01,
+      "limit_pref_v" : 0.01
+   },
+   "_comment" : "that's all",
+   "learning_rate" : {
+      "decay_rate" : 0.95,
+      "stop_lr" : 3e-08,
+      "decay_steps" : 98,
+      "_comment" : "that's all",
+      "start_lr" : 0.001
+   }
+}

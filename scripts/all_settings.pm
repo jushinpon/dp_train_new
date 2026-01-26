@@ -12,28 +12,29 @@ use warnings;
 use Cwd;
 use POSIX;
 ###!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! You need to set the following parameters for your case !!!!!!!!!
-my @DLP_elements = ("Al","P");#your DLP element sequence
+my @DLP_elements = ("Al", "Co", "Cr", "Fe", "Mo", "Nb", "Ni", "Ta", "Ti", "W");
+#my @DLP_elements = ("Al","P");#your DLP element sequence
 my @atom_ener;
 for my $element (0 .. $#DLP_elements){
     push @atom_ener, sprintf("%.2f",0.0);#eV/atom, the energy of each element in DLP elements
 }
 #my $atom_ener = join(",",@atom_ener);
 my $force_upperbound = 200.0;# eV/A, the max force absolute value allowed in npy
-my $virial_upperbound = 500.0;# eV/A^3 * Vol = eV in Unit , the max virial absolute value allowed in npy
+my $virial_upperbound = 10000.0;# eV/A^3 * Vol = eV in Unit , the max virial absolute value allowed in npy
 
 my $ener_upperbound = 200.0;# larger than which is not used (eV/atom)
 my $ener_lowerbound = -1e10;## smaller than which is not used (eV/atom)
 #Please set the following for $jobtype in order:
 #1. npy_only: get npy files and files in npy_conversion_info
 #2. dp_train: only do dp train with your npy files.
-#my $jobtype = "npy_only";
-my $jobtype = "dp_train";
+my $jobtype = "npy_only";
+#my $jobtype = "dp_train";
 
 my $use_hybrid = "no";#if "yes", you need to use the hybrid setting in json template file
 
 #for label and final training 
 my $trainNo = 1;#4 for label, and 1 with a larger training step (20000000) for the final
-my $trainstep = 3000000;# 2500000 for final training
+my $trainstep = 300;# 2500000 for final training
 my $compress_trainstep = $trainstep;#(useless!!!!!!)
 
 ###IMPORTANT, PLEASE READ THE FOLLOWING FOR THE FINAL TRAININ!##########

@@ -17,15 +17,11 @@ print BAD "#The following files are bad and filtered by softlink4initial.pl\n";
 my $scaleID_lowerBound = -1;
 my $scaleID_upperBound = 30;
 
-my $include_labelled = "yes";#if yes, you need to provide parent paths of your labelled folders (@all_labelled) 
+my $include_labelled = "no";#if yes, you need to provide parent paths of your labelled folders (@all_labelled) 
 my @all_labelled;
 if($include_labelled eq "yes"){
     @all_labelled = qw(
-        /home/jsp1/AlP/dp_train_label/thermo_label
-        /home/jsp1/AlP/dp_train_label/shear_label
-        /home/jsp1/AlP/dp_train_label/thermo_label_threeNTs
-        /home/jsp1/AlP/dp_train_label/scale_label
-
+        
     );
     map { s/^\s+|\s+$//g; } @all_labelled;
 }
@@ -34,17 +30,14 @@ if($include_labelled eq "yes"){
 my @all_inifolder;
 #!!! make the following if you have place everything in the initial folder (don't put dimer results here)
 @all_inifolder= qw(    
-   /home/jsp1/AlP/from195/
-   /home/jsp1/AlP/QE_from_MatCld/QEall_set/
-   /home/jsp1/AlP/QE4heat/softlink4training/
-   /home/jsp1/AlP/new_AlP/QE_from_MatCld/QEall_set/  
+   /home/jsp1/HEA_10elements/categorized_UMA/*/  
 );
 
 map { s/^\s+|\s+$//g; } @all_inifolder;
 #put your dimer folders here if you have
 my @all_dimerfolder;
 @all_dimerfolder= qw(    
-    /home/jsp1/AlP/QE4dimer/data2QE/
+   
 );
 map { s/^\s+|\s+$//g; } @all_dimerfolder;
 
@@ -103,7 +96,6 @@ for (@all_inifolder){
     map { s/^\s+|\s+$//g; } @temp;
     @all_ini = (@all_ini,@temp);
 }
-
 
 @all_ini = (@all_ini,@dimer_pairs);
 
